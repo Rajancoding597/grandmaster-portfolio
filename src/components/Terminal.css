@@ -1,0 +1,166 @@
+/* CRT Screen Effect */
+.terminal-crt {
+    position: relative;
+    overflow: hidden;
+    background-color: #0a0a0a;
+    box-shadow: inset 0 0 10rem rgba(0, 0, 0, 0.75);
+}
+
+/* Scanlines - excluded from scrollbar area */
+.terminal-crt::before {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 10px;
+    /* Leave space for scrollbar */
+    background: linear-gradient(to bottom,
+            rgba(18, 16, 16, 0) 50%,
+            rgba(0, 0, 0, 0.25) 50%);
+    background-size: 100% 4px;
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* Flicker Animation */
+@keyframes flicker {
+    0% {
+        opacity: 0.97;
+    }
+
+    5% {
+        opacity: 0.95;
+    }
+
+    10% {
+        opacity: 0.9;
+    }
+
+    15% {
+        opacity: 0.95;
+    }
+
+    20% {
+        opacity: 0.99;
+    }
+
+    25% {
+        opacity: 0.95;
+    }
+
+    30% {
+        opacity: 0.9;
+    }
+
+    35% {
+        opacity: 0.96;
+    }
+
+    40% {
+        opacity: 0.98;
+    }
+
+    45% {
+        opacity: 0.95;
+    }
+
+    50% {
+        opacity: 0.99;
+    }
+
+    55% {
+        opacity: 0.93;
+    }
+
+    60% {
+        opacity: 0.9;
+    }
+
+    65% {
+        opacity: 0.96;
+    }
+
+    70% {
+        opacity: 1;
+    }
+
+    75% {
+        opacity: 0.97;
+    }
+
+    80% {
+        opacity: 0.95;
+    }
+
+    85% {
+        opacity: 0.92;
+    }
+
+    90% {
+        opacity: 0.96;
+    }
+
+    95% {
+        opacity: 0.99;
+    }
+
+    100% {
+        opacity: 0.94;
+    }
+}
+
+.terminal-flicker {
+    animation: flicker 0.15s infinite;
+}
+
+/* Text Glow */
+.text-glow {
+    text-shadow: 0 0 5px rgba(212, 175, 55, 0.5);
+}
+
+.text-glow-green {
+    text-shadow: 0 0 5px rgba(34, 197, 94, 0.5);
+}
+
+/* Boot Sequence Cursor */
+.cursor-blink {
+    animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
+
+/* Custom Scrollbar for Terminal Content */
+.terminal-scroll::-webkit-scrollbar {
+    width: 10px;
+}
+
+.terminal-scroll::-webkit-scrollbar-track {
+    background: #171717;
+    /* neutral-900 */
+    border-radius: 0 8px 8px 0;
+}
+
+.terminal-scroll::-webkit-scrollbar-thumb {
+    background: #404040;
+    /* neutral-700 */
+    border-radius: 5px;
+    border: 2px solid #171717;
+    /* Creates padding effect */
+}
+
+.terminal-scroll::-webkit-scrollbar-thumb:hover {
+    background: #d4af37;
+    /* gold-500 */
+}
