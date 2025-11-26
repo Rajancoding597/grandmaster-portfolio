@@ -3,6 +3,9 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -12,6 +15,7 @@
   "dependencies": {
     "@react-three/drei": "^9.105.0",
     "@react-three/fiber": "^8.16.8",
+    "@vercel/speed-insights": "^1.2.0",
     "chess.js": "^1.4.0",
     "clsx": "^2.0.0",
     "framer-motion": "^10.16.4",
