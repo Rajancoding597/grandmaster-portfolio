@@ -6,7 +6,7 @@ export const fileSystem = {
         type: "dir",
         children: {
           "klean.txt": { type: "file", content: "🗺️ Project: Klean\nStack: React, Node.js, MongoDB\nDescription: A WebApp to Track Garbage Locations. Implemented Geolocation APIs and real-time tracking.\nRole: Full-stack Developer\nHighlights: Real-time location tracking, Interactive map interface" },
-          "portfolio.txt": { type: "file", content: "♟️ Project: Portfolio (This Site!)\nStack: React, Vite, Tailwind, Framer Motion\nDescription: A Grandmaster-themed interactive portfolio with a functional terminal.\nRole: Creator & Designer\nHighlights: Chess-themed UI, Interactive terminal, CRT effects" },
+          "portfolio.txt": { type: "file", content: "♟️ Project: Portfolio (This Site!)\nStack: React, Vite, Tailwind, Framer Motion\nDescription: A chess-themed interactive portfolio with a functional terminal.\nRole: Creator & Designer\nHighlights: Chess-themed UI, Interactive terminal, CRT effects" },
           "churn_detection.py": { type: "file", content: "# 📊 InfoEdge Intern Project\n# Built automated customer usage drop detection system.\n# Reduced churn by proactively reaching out to at-risk clients.\n# Stack: Python, Data Analysis\n# Impact: Improved customer retention metrics" }
         }
       },
@@ -69,17 +69,21 @@ export const commands = {
   ls              List directory contents
   cd [dir]        Change directory
   cat [file]      Display file contents
-  summary         Display profile TL;DR
+  summary         Display profile 
   clear           Clear the terminal screen
   whoami          Display current user
   sudo [cmd]      Execute a command with superuser privileges
-  email           Open default email client`,
+  email           Open default email client
+  color [theme]   Change terminal theme (green, amber, cyan, gold)
+  matrix          Enter the Matrix
+  vi / vim        Edit file (try it!)
+  rm -rf /        Do not run this...`,
   
-  whoami: () => "guest@grandmaster-portfolio",
+  whoami: () => "guest@rajan-portfolio",
 
   summary: () => `
   ---------------------------------------------------
-  👤 RAJAN DHIMAN | Grandmaster Candidate
+  👤 RAJAN DHIMAN | Software Engineer
   ---------------------------------------------------
   📍 Role: Associate Software Engineer @ Oracle
   🛠️ Stack: Java, React, SQL, OracleJET
@@ -128,7 +132,34 @@ Status: 🟢 Available for opportunities
    to your team's success!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
     }
-    return "Permission denied: You are not a Grandmaster.";
-  }
+    return "Permission denied: You are not Rajan.";
+  },
+
+  color: (args) => {
+    const theme = args[0];
+    if (!theme) return "Usage: color [green|amber|cyan|gold]";
+    
+    const themes = ['green', 'amber', 'cyan', 'gold'];
+    if (themes.includes(theme)) {
+      // We'll handle the actual state change in the component via a custom event or callback
+      // For now, we return a success message that the component intercepts
+      return `__THEME_CHANGE__:${theme}`;
+    }
+    return `Color '${theme}' not found. Available: ${themes.join(', ')}`;
+  },
+
+  matrix: () => {
+    return "__MATRIX_EFFECT__";
+  },
+
+  rm: (args) => {
+    if (args[0] === '-rf' && args[1] === '/') {
+      return "__SYSTEM_CRASH__";
+    }
+    return "rm: missing operand";
+  },
+
+  vi: () => "vim: to exit, restart your browser... just kidding, press Esc (but it won't work here).",
+  vim: () => "vim: to exit, restart your browser... just kidding, press Esc (but it won't work here)."
 
 };

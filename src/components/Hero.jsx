@@ -97,7 +97,7 @@ const Hero = ({ onGameStart, gameStarted }) => {
                 className="text-neutral-500 leading-relaxed max-w-xl text-lg"
               >
                 I bring the strategic depth of a <span className="text-gold-500 font-medium">FIDE-rated chess player</span> to software architecture. 
-                From optimizing SQL queries at Oracle to solving 1000+ problems on CodeChef, I build robust, scalable systems that win the endgame.
+                Whether optimizing distributed workflows at Oracle or mastering 1000+ LeetCode problems, I make sure every move delivers performance, reliability, and a winning endgame.
               </motion.p>
 
               <motion.div 
@@ -106,7 +106,7 @@ const Hero = ({ onGameStart, gameStarted }) => {
                 transition={{ delay: 1.2 }}
                 className="flex flex-wrap gap-3 pt-4"
               >
-                {['Java', 'Spring Boot', 'React', 'Next.js', 'AWS', 'Docker', 'Kubernetes'].map((tech) => (
+                {['Java', 'Microservices', 'SQL', 'Python', 'Amazon S3', 'C | C++', 'AI | ML', "Rest API's", 'TypeScript','React'].map((tech) => (
                   <span key={tech} className="px-4 py-2 bg-neutral-900/50 border border-neutral-800 rounded-full text-neutral-300 text-sm hover:border-gold-500/50 hover:text-gold-500 transition-colors cursor-default flex items-center gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-neutral-600"></span>
                     {tech}
@@ -157,7 +157,7 @@ const Hero = ({ onGameStart, gameStarted }) => {
 
                 <h3 className="text-2xl font-bold text-white mb-6 border-b border-neutral-800 pb-4 flex items-center gap-3">
                   <Database size={24} className="text-gold-500" />
-                  Grandmaster Stats
+                  Rajan's Stats
                 </h3>
                 
                 <div className="space-y-6 relative z-10">

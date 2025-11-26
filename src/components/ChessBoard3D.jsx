@@ -155,7 +155,7 @@ const getSquareFromIndex = (rowIndex, colIndex) => {
   return `${files[colIndex]}${rank}`;
 };
 
-function ChessScene({ onGameStart, mode = 'click', quality = 'MEDIUM' }) {
+function ChessScene({ onGameStart, mode = 'click', quality = 'MEDIUM', isMobile = false }) {
   const groupRef = useRef();
   const [hoveredPiece, setHoveredPiece] = useState(null);
   const [selectedSquare, setSelectedSquare] = useState(null);
@@ -208,7 +208,7 @@ function ChessScene({ onGameStart, mode = 'click', quality = 'MEDIUM' }) {
         // Game finished
         const timer = setTimeout(() => {
           setMessage("Game Over");
-          setTimeout(() => onGameStart(), 2000); // Transition after 2s
+          setTimeout(() => onGameStart("Game Analysis Complete. Accessing Archives..."), 2000); // Transition after 2s
         }, 1000);
         return () => clearTimeout(timer);
       }
@@ -249,7 +249,7 @@ function ChessScene({ onGameStart, mode = 'click', quality = 'MEDIUM' }) {
             // Puzzle Logic
             if (puzzleData.solution && move.from === puzzleData.solution.from && move.to === puzzleData.solution.to) {
               setMessage("Correct! 🎉");
-              setTimeout(() => onGameStart(), 1500);
+              setTimeout(() => onGameStart("Tactical Solution Verified. Access Granted."), 1500);
             } else {
               setTimeout(() => {
                 chess.undo();
@@ -260,7 +260,7 @@ function ChessScene({ onGameStart, mode = 'click', quality = 'MEDIUM' }) {
           } else {
             // Free Play Logic - Transition after ANY valid move
             setMessage("Great Move! 🚀");
-            setTimeout(() => onGameStart(), 1500);
+            setTimeout(() => onGameStart("Move Accepted. Initiating Sequence..."), 1500);
           }
         } else {
             setMessage("Invalid Move ❌");
@@ -334,13 +334,14 @@ function ChessScene({ onGameStart, mode = 'click', quality = 'MEDIUM' }) {
         chess.move(move);
         setBoard(chess.board());
         setMessage("Solved! 🚀");
+        setMessage("Solved! 🚀");
         // Transition after showing the move
-        setTimeout(() => onGameStart(), 1000);
+        setTimeout(() => onGameStart("Auto-Solve Complete. Proceeding..."), 1000);
       } catch (e) {
-        onGameStart();
+        onGameStart("Skipping Puzzle...");
       }
     } else {
-      onGameStart();
+      onGameStart("Bypassing Security...");
     }
   };
 
@@ -394,8 +395,12 @@ function ChessScene({ onGameStart, mode = 'click', quality = 'MEDIUM' }) {
         Interactive Portfolio Experience
       </Text>
 
-      {/* Side Info Panel - Floating to the right */}
-      <group position={[6, 1, 0]} rotation={[0, -0.5, 0]}>
+      {/* Side Info Panel - Floating to the right on Desktop, Top on Mobile */}
+      <group 
+        position={isMobile ? [0, 5.5, -4] : [6, 1, 0]} 
+        rotation={isMobile ? [0, 0, 0] : [0, -0.5, 0]}
+        scale={isMobile ? 0.8 : 1}
+      >
         {/* Panel Background */}
         <mesh position={[0, 0, -0.1]}>
           <planeGeometry args={[5, 4]} />
@@ -431,10 +436,176 @@ function ChessScene({ onGameStart, mode = 'click', quality = 'MEDIUM' }) {
   );
 }
 
+
+const BOOT_MESSAGES = [
+  { text: "> SYSTEM_FAILURE_DETECTED", color: "text-red-500" },
+  { text: "> ATTEMPTING_AUTO_REPAIR...", color: "text-yellow-500" },
+  { text: "> ERROR: SEGMENTATION_FAULT_AT_0x8F", color: "text-red-500" },
+  { text: "> RETRYING_CONNECTION (ATTEMPT 2)...", color: "text-yellow-500" },
+  { text: "> TIMEOUT_AT_GATEWAY_PROXY", color: "text-red-500" },
+  { text: "> EXECUTING_FORCE_OVERRIDE...", color: "text-green-500" },
+  { text: "> BYPASSING_FIREWALL...", color: "text-green-500" },
+  { text: "> ACCESS_GRANTED", color: "text-green-500" },
+  { text: "> WELCOME_RAJAN", color: "text-green-500" }
+];
+
 export default function ChessBoard3D({ onGameStart }) {
   const [mode, setMode] = useState('click');
   const [quality, setQuality] = useState('MEDIUM');
   const [isMobile, setIsMobile] = useState(false);
+  const [isGlitching, setIsGlitching] = useState(false);
+  const [showBoot, setShowBoot] = useState(false);
+  const [glitchStyle, setGlitchStyle] = useState({});
+  const [bootLines, setBootLines] = useState([]);
+  const [transitionStage, setTransitionStage] = useState('idle'); // idle, success, glitch, boot
+  const [successMsg, setSuccessMsg] = useState('');
+  const [repairProgress, setRepairProgress] = useState(0);
+  const [progressColor, setProgressColor] = useState('bg-green-500');
+  const [currentAction, setCurrentAction] = useState('');
+
+  // Dynamic Glitch Effect
+  useEffect(() => {
+    if (!isGlitching) {
+      setGlitchStyle({});
+      return;
+    }
+
+    const interval = setInterval(() => {
+      const skewX = Math.random() * 20 - 10;
+      const skewY = Math.random() * 10 - 5;
+      const scale = 1 + Math.random() * 0.1;
+      const hue = Math.random() * 90;
+      const blur = Math.random() * 4;
+      
+      setGlitchStyle({
+        transform: `skew(${skewX}deg, ${skewY}deg) scale(${scale})`,
+        filter: `hue-rotate(${hue}deg) blur(${blur}px)`,
+        opacity: 0.8 + Math.random() * 0.2
+      });
+    }, 50);
+
+    return () => clearInterval(interval);
+  }, [isGlitching]);
+
+  // Repair Sequence Logic
+  useEffect(() => {
+    if (!showBoot) {
+      setBootLines([]);
+      setRepairProgress(0);
+      setProgressColor('bg-green-500');
+      setCurrentAction('');
+      return;
+    }
+
+    const runRepairSequence = async () => {
+      const addLog = (text, color) => {
+        setBootLines(prev => [...prev, { text, color }]);
+      };
+      
+      const setAction = (text) => {
+        setCurrentAction(text);
+      };
+
+      const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+      // Attempt 1: Failure
+      addLog("> SYSTEM_FAILURE_DETECTED", "text-red-500");
+      setAction("DIAGNOSING SYSTEM FAILURE");
+      await wait(800);
+      
+      addLog("> INITIATING_SYSTEM_REPAIR (ATTEMPT 1/3)...", "text-yellow-500");
+      setAction("ATTEMPTING REPAIR (1/3)");
+      setProgressColor('bg-yellow-500');
+      
+      // Progress 0 -> 35% (Simulating "Scanning")
+      for (let i = 0; i <= 35; i+=1) {
+        setRepairProgress(i);
+        await wait(20); // Fast scan
+      }
+      await wait(200); // Brief pause
+      
+      // Progress 35 -> 42% (Simulating "Fixing")
+      setAction("REPAIRING SECTOR 0x99");
+      for (let i = 35; i <= 42; i+=0.5) {
+        setRepairProgress(i);
+        await wait(100); // Slow, struggling
+      }
+      
+      setProgressColor('bg-red-500');
+      setAction("REPAIR FAILED");
+      addLog("> ERROR: CORRUPTED_SECTOR_0x99. REPAIR_ABORTED.", "text-red-500");
+      await wait(1200);
+
+      // Attempt 2: Failure
+      addLog("> REROUTING_CACHE_NODES (ATTEMPT 2/3)...", "text-yellow-500");
+      setAction("REROUTING TRAFFIC (2/3)");
+      setProgressColor('bg-yellow-500');
+      
+      // Progress 0 -> 60% (Fast Reroute)
+      setRepairProgress(0);
+      for (let i = 0; i <= 60; i+=2) {
+        setRepairProgress(i);
+        await wait(15);
+      }
+      await wait(200);
+      
+      // Progress 60 -> 88% (Connecting)
+      setAction("ESTABLISHING HANDSHAKE");
+      for (let i = 60; i <= 88; i+=1) {
+        setRepairProgress(i);
+        await wait(50);
+      }
+      
+      setProgressColor('bg-red-500');
+      setAction("CONNECTION REFUSED");
+      addLog("> ERROR: CONNECTION_REFUSED_BY_HOST.", "text-red-500");
+      await wait(1200);
+
+      // Attempt 3: Success
+      addLog("> EXECUTING_ROOT_OVERRIDE_PROTOCOL...", "text-green-500");
+      setAction("OVERRIDING SECURITY");
+      setProgressColor('bg-green-500');
+      
+      // Progress 0 -> 100% (Smooth Override)
+      setRepairProgress(0);
+      for (let i = 0; i <= 100; i+=1.5) {
+        setRepairProgress(i);
+        await wait(20);
+      }
+      
+      setAction("SYSTEM RESTORED");
+      addLog("> SUCCESS: SYSTEM_KERNEL_RESTORED.", "text-green-500");
+      await wait(800);
+      addLog("> WELCOME_BACK_RAJAN.", "text-green-500");
+      
+      // Wait for user to read the success message before transitioning
+      await wait(2000);
+      onGameStart();
+    };
+
+    runRepairSequence();
+  }, [showBoot, onGameStart]);
+
+  const handleGameStart = (message = "Bypassing Security...") => {
+    if (transitionStage !== 'idle') return;
+
+    // Stage 1: Success Message
+    setSuccessMsg(message);
+    setTransitionStage('success');
+
+    // Stage 2: Crash (Glitch)
+    setTimeout(() => {
+      setTransitionStage('glitch');
+      setIsGlitching(true);
+    }, 3000);
+    
+    // Stage 3: Boot Screen
+    setTimeout(() => {
+      setShowBoot(true);
+      setIsGlitching(false);
+      setTransitionStage('boot');
+    }, 4000); // 3s success + 1s glitch
+  };
   
   // We need to access handleSkip from outside, but it's inside ChessScene.
   // Instead, we'll implement the button logic here or pass a ref.
@@ -466,7 +637,12 @@ export default function ChessBoard3D({ onGameStart }) {
   const cameraFov = isMobile ? 60 : 45;
 
   return (
-    <div className="w-full h-full min-h-screen relative bg-neutral-900">
+    <div className="w-full h-full min-h-screen relative bg-neutral-900 overflow-hidden">
+      {/* Glitch Container */}
+      <div 
+        className="w-full h-full transition-all duration-75"
+        style={glitchStyle}
+      >
       <Canvas shadows camera={{ position: cameraPosition, fov: cameraFov }}>
         <color attach="background" args={['#050505']} />
         
@@ -541,7 +717,7 @@ export default function ChessBoard3D({ onGameStart }) {
         <Environment preset="city" blur={1} background={false} />
         <ContactShadows resolution={1024} scale={20} blur={2} opacity={0.4} far={1} color="#000000" />
         
-        <ChessScene onGameStart={onGameStart} mode={mode} quality={quality} />
+        <ChessScene onGameStart={handleGameStart} mode={mode} quality={quality} isMobile={isMobile} />
         
         <OrbitControls
           enableDamping
@@ -559,12 +735,35 @@ export default function ChessBoard3D({ onGameStart }) {
       {/* Fixed Bottom-Right Skip Button - Responsive */}
       <div className="absolute bottom-20 right-4 md:bottom-8 md:right-8 z-50">
         <button
-          onClick={() => onGameStart()}
-          className="px-4 py-2 md:px-6 md:py-3 bg-neutral-900/80 hover:bg-gold-500/20 text-gold-500 border border-gold-500/50 rounded-lg backdrop-blur-md transition-all duration-300 flex items-center gap-2 group shadow-2xl text-sm md:text-base"
+          onClick={() => handleGameStart("Bypassing Security...")}
+          className={`px-4 py-2 md:px-6 md:py-3 bg-neutral-900/80 hover:bg-gold-500/20 text-gold-500 border border-gold-500/50 rounded-lg backdrop-blur-md transition-all duration-300 flex items-center gap-2 group shadow-2xl text-sm md:text-base ${transitionStage !== 'idle' ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
         >
           <span className="font-mono font-bold tracking-wider">SKIP TO PORTFOLIO</span>
           <span className="group-hover:translate-x-1 transition-transform">→</span>
         </button>
+      </div>
+      
+      {/* Success Message Overlay - Enhanced */}
+      <div 
+        className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 transition-all duration-500 ${transitionStage === 'success' ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}
+      >
+        <div className="bg-black/80 backdrop-blur-md border border-gold-500/30 rounded-xl p-8 md:p-12 shadow-2xl shadow-gold-500/10 flex flex-col items-center gap-4 min-w-[300px] md:min-w-[400px]">
+          {/* Icon */}
+          <div className="w-12 h-12 rounded-full bg-gold-500/10 flex items-center justify-center border border-gold-500/50 mb-2 animate-bounce">
+            <span className="text-2xl">🔓</span>
+          </div>
+          
+          {/* Main Message */}
+          <h2 className="text-2xl md:text-4xl font-bold text-gold-500 text-center tracking-wide drop-shadow-[0_0_10px_rgba(212,175,55,0.5)]">
+            {successMsg}
+          </h2>
+          
+          {/* Subtext */}
+          <div className="flex items-center gap-2 text-neutral-400 font-mono text-xs md:text-sm">
+            <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+            <p className="uppercase tracking-widest">Establishing Secure Connection...</p>
+          </div>
+        </div>
       </div>
       
       <div className="absolute bottom-4 md:bottom-8 left-1/2 transform -translate-x-1/2 text-center w-full pointer-events-none px-4">
@@ -574,6 +773,47 @@ export default function ChessBoard3D({ onGameStart }) {
            'Click any piece to begin'}
         </p>
       </div>
+      </div>
+      
+      {/* Matrix Boot Overlay with CRT Effects */}
+      {showBoot && (
+        <div className="absolute inset-0 bg-black z-[100] flex items-center justify-center font-mono text-green-500 p-8 overflow-hidden">
+          {/* CRT Scanlines */}
+          <div className="absolute inset-0 pointer-events-none z-10 opacity-20" 
+               style={{ background: 'linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06))', backgroundSize: '100% 2px, 3px 100%' }}>
+          </div>
+          
+          {/* CRT Vignette */}
+          <div className="absolute inset-0 pointer-events-none z-20"
+               style={{ background: 'radial-gradient(circle, rgba(0,0,0,0) 60%, rgba(0,0,0,0.6) 100%)' }}>
+          </div>
+
+          <div className="max-w-lg w-full z-30 relative">
+            {bootLines.map((line, index) => (
+              line ? (
+                <p key={index} className={`mb-2 text-lg md:text-xl opacity-90 text-shadow-glow ${line.color}`}>
+                  {line.text}
+                </p>
+              ) : null
+            ))}
+            <p className="animate-pulse mt-4 text-green-400">_</p>
+            
+            <div className="w-full h-4 bg-gray-900 border border-gray-700 mt-8 rounded-sm overflow-hidden relative">
+               {/* Grid lines for retro feel */}
+               <div className="absolute inset-0 z-10" style={{backgroundImage: 'linear-gradient(90deg, transparent 95%, rgba(0,0,0,0.5) 95%)', backgroundSize: '20px 100%'}}></div>
+               
+               <div 
+                 className={`h-full ${progressColor} transition-all duration-100 ease-linear`} 
+                 style={{width: `${repairProgress}%`}}
+               ></div>
+            </div>
+            <div className="flex justify-between text-xs text-gray-500 mt-1 font-mono">
+              <span className="uppercase">{currentAction || 'WAITING...'}</span>
+              <span>{Math.floor(repairProgress)}%</span>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

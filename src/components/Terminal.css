@@ -1,166 +1,240 @@
-/* CRT Screen Effect */
+/* Advanced CRT Terminal Effects */
+
+/* 1. Screen Curvature & Vignette */
 .terminal-crt {
-    position: relative;
-    overflow: hidden;
-    background-color: #0a0a0a;
-    box-shadow: inset 0 0 10rem rgba(0, 0, 0, 0.75);
+  box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.9);
+  animation: textShadow 1.6s infinite;
 }
 
-/* Scanlines - excluded from scrollbar area */
+@keyframes textShadow {
+  0% {
+    text-shadow: 0.4389924193300864px 0 1px rgba(0, 30, 255, 0.5), -0.4389924193300864px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
+  }
+
+  5% {
+    text-shadow: 2.7928974010788217px 0 1px rgba(0, 30, 255, 0.5), -2.7928974010788217px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
+  }
+
+  50% {
+    text-shadow: -0.4389924193300864px 0 1px rgba(0, 30, 255, 0.5), 0.4389924193300864px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
+  }
+
+  100% {
+    text-shadow: 0.4389924193300864px 0 1px rgba(0, 30, 255, 0.5), -0.4389924193300864px 0 1px rgba(255, 0, 80, 0.3), 0 0 3px;
+  }
+}
+
+/* 2. Scanlines */
 .terminal-crt::before {
-    content: " ";
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 10px;
-    /* Leave space for scrollbar */
-    background: linear-gradient(to bottom,
-            rgba(18, 16, 16, 0) 50%,
-            rgba(0, 0, 0, 0.25) 50%);
-    background-size: 100% 4px;
-    z-index: 2;
-    pointer-events: none;
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%,
+      rgba(0, 0, 0, 0.25) 50%),
+    linear-gradient(90deg,
+      rgba(255, 0, 0, 0.06),
+      rgba(0, 255, 0, 0.02),
+      rgba(0, 0, 255, 0.06));
+  z-index: 2;
+  background-size: 100% 2px, 3px 100%;
+  pointer-events: none;
 }
 
-/* Flicker Animation */
+/* 3. Flicker Animation */
 @keyframes flicker {
-    0% {
-        opacity: 0.97;
-    }
+  0% {
+    opacity: 0.27861;
+  }
 
-    5% {
-        opacity: 0.95;
-    }
+  5% {
+    opacity: 0.34769;
+  }
 
-    10% {
-        opacity: 0.9;
-    }
+  10% {
+    opacity: 0.23604;
+  }
 
-    15% {
-        opacity: 0.95;
-    }
+  15% {
+    opacity: 0.90626;
+  }
 
-    20% {
-        opacity: 0.99;
-    }
+  20% {
+    opacity: 0.18128;
+  }
 
-    25% {
-        opacity: 0.95;
-    }
+  25% {
+    opacity: 0.83891;
+  }
 
-    30% {
-        opacity: 0.9;
-    }
+  30% {
+    opacity: 0.65583;
+  }
 
-    35% {
-        opacity: 0.96;
-    }
+  35% {
+    opacity: 0.67807;
+  }
 
-    40% {
-        opacity: 0.98;
-    }
+  40% {
+    opacity: 0.26559;
+  }
 
-    45% {
-        opacity: 0.95;
-    }
+  45% {
+    opacity: 0.84693;
+  }
 
-    50% {
-        opacity: 0.99;
-    }
+  50% {
+    opacity: 0.96019;
+  }
 
-    55% {
-        opacity: 0.93;
-    }
+  55% {
+    opacity: 0.08594;
+  }
 
-    60% {
-        opacity: 0.9;
-    }
+  60% {
+    opacity: 0.20313;
+  }
 
-    65% {
-        opacity: 0.96;
-    }
+  65% {
+    opacity: 0.71988;
+  }
 
-    70% {
-        opacity: 1;
-    }
+  70% {
+    opacity: 0.53455;
+  }
 
-    75% {
-        opacity: 0.97;
-    }
+  75% {
+    opacity: 0.37288;
+  }
 
-    80% {
-        opacity: 0.95;
-    }
+  80% {
+    opacity: 0.71428;
+  }
 
-    85% {
-        opacity: 0.92;
-    }
+  85% {
+    opacity: 0.70419;
+  }
 
-    90% {
-        opacity: 0.96;
-    }
+  90% {
+    opacity: 0.7003;
+  }
 
-    95% {
-        opacity: 0.99;
-    }
+  95% {
+    opacity: 0.36108;
+  }
 
-    100% {
-        opacity: 0.94;
-    }
+  100% {
+    opacity: 0.24387;
+  }
 }
 
 .terminal-flicker {
-    animation: flicker 0.15s infinite;
+  animation: flicker 0.15s infinite;
 }
 
-/* Text Glow */
+/* 4. Text Glow & RGB Shift */
 .text-glow {
-    text-shadow: 0 0 5px rgba(212, 175, 55, 0.5);
+  text-shadow: 0 0 4px rgba(212, 175, 55, 0.5);
 }
 
 .text-glow-green {
-    text-shadow: 0 0 5px rgba(34, 197, 94, 0.5);
+  text-shadow: 0 0 4px rgba(34, 197, 94, 0.5);
 }
 
-/* Boot Sequence Cursor */
+.text-glow-amber {
+  text-shadow: 0 0 4px rgba(245, 158, 11, 0.5);
+}
+
+.text-glow-cyan {
+  text-shadow: 0 0 4px rgba(6, 182, 212, 0.5);
+}
+
+/* 5. Cursor Blink */
 .cursor-blink {
-    animation: blink 1s step-end infinite;
+  animation: blink 1s step-end infinite;
 }
 
 @keyframes blink {
 
-    0%,
-    100% {
-        opacity: 1;
-    }
+  0%,
+  100% {
+    opacity: 1;
+  }
 
-    50% {
-        opacity: 0;
-    }
+  50% {
+    opacity: 0;
+  }
 }
 
-/* Custom Scrollbar for Terminal Content */
+/* 6. Turn-On Animation */
+@keyframes turnOn {
+  0% {
+    transform: scale(1, 0.002);
+    opacity: 0;
+  }
+
+  30% {
+    transform: scale(1, 0.002);
+    opacity: 1;
+  }
+
+  60% {
+    transform: scale(1, 1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1, 1);
+    opacity: 1;
+  }
+}
+
+.terminal-turn-on {
+  animation: turnOn 0.4s ease-out forwards;
+}
+
+/* 7. Matrix Rain Animation */
+@keyframes matrixRain {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  90% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(500px);
+    opacity: 0;
+  }
+}
+
+.animate-matrix {
+  animation: matrixRain linear infinite;
+}
+
+/* Scrollbar Styling */
 .terminal-scroll::-webkit-scrollbar {
-    width: 10px;
+  width: 8px;
 }
 
 .terminal-scroll::-webkit-scrollbar-track {
-    background: #171717;
-    /* neutral-900 */
-    border-radius: 0 8px 8px 0;
+  background: #0a0a0a;
 }
 
 .terminal-scroll::-webkit-scrollbar-thumb {
-    background: #404040;
-    /* neutral-700 */
-    border-radius: 5px;
-    border: 2px solid #171717;
-    /* Creates padding effect */
+  background: #333;
+  border-radius: 4px;
 }
 
 .terminal-scroll::-webkit-scrollbar-thumb:hover {
-    background: #d4af37;
-    /* gold-500 */
+  background: #444;
 }

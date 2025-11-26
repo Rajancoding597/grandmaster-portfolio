@@ -4,7 +4,7 @@ import './Terminal.css';
 import { Play, FileText, Mail, Terminal as TerminalIcon, FileDown } from 'lucide-react';
 
 const BOOT_SEQUENCE = [
-  "Initializing Grandmaster Kernel v1.0.0...",
+  "Initializing Rajan's Kernel v1.0.0...",
   "Loading Chess Engine... [OK]",
   "Mounting File System... [OK]",
   "Establishing Secure Connection... [OK]",
@@ -32,6 +32,9 @@ const Terminal = () => {
   const [startBoot, setStartBoot] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const [typingOutput, setTypingOutput] = useState(null); // For typewriter effect
+  const [theme, setTheme] = useState('gold'); // gold, green, amber, cyan
+  const [showMatrix, setShowMatrix] = useState(false);
+  const [isCrashing, setIsCrashing] = useState(false);
   
   const inputRef = useRef(null);
   const bottomRef = useRef(null);
@@ -98,12 +101,15 @@ const Terminal = () => {
     }
   }, [typingOutput]);
 
-  // Auto-focus after boot
+  // Auto-focus after boot or crash recovery
   useEffect(() => {
-    if (!isBooting && inputRef.current) {
-      inputRef.current.focus({ preventScroll: true });
+    if (!isBooting && !isCrashing && inputRef.current) {
+      // Small delay to ensure DOM is ready
+      setTimeout(() => {
+        inputRef.current?.focus({ preventScroll: true });
+      }, 10);
     }
-  }, [isBooting]);
+  }, [isBooting, isCrashing]);
 
   const getCurrentDir = () => {
     let current = fileSystem["~"];
@@ -123,6 +129,31 @@ const Terminal = () => {
       clearTimeout(typingTimeoutRef.current);
     }
 
+    // Special handling for theme/matrix commands
+    if (text.startsWith('__THEME_CHANGE__:')) {
+      const newTheme = text.split(':')[1];
+      setTheme(newTheme);
+      if (callback) callback(`Theme changed to ${newTheme}`);
+      return;
+    }
+
+    if (text === '__MATRIX_EFFECT__') {
+      setShowMatrix(true);
+      setTimeout(() => setShowMatrix(false), 5000); // Matrix lasts 5s
+      if (callback) callback("Follow the white rabbit...");
+      return;
+    }
+
+    if (text === '__SYSTEM_CRASH__') {
+      setIsCrashing(true);
+      setTimeout(() => {
+        setIsCrashing(false);
+        setHistory([]); // Clear history
+        if (callback) callback("System restored. Nice try.");
+      }, 3000);
+      return;
+    }
+
     let index = 0;
     const speed = 10; // milliseconds per character (faster)
     
@@ -135,7 +166,7 @@ const Terminal = () => {
         typingTimeoutRef.current = setTimeout(type, speed);
       } else {
         setTypingOutput(null);
-        if (callback) callback();
+        if (callback) callback(text); // Pass full text back
       }
     };
 
@@ -165,14 +196,22 @@ const Terminal = () => {
     try {
       switch (cmd) {
         case 'help':
+        case 'commands':
         case 'whoami':
         case 'email':
         case 'summary':
-          if (commands[cmd]) {
-            output = commands[cmd]();
+        case 'matrix':
+        case 'vi':
+        case 'vim':
+          if (commands[cmd] || (cmd === 'commands' && commands.help)) {
+            output = cmd === 'commands' ? commands.help() : commands[cmd]();
           } else {
             output = `Command definition missing: ${cmd}`;
           }
+          break;
+        case 'color':
+        case 'rm':
+          output = commands[cmd](args);
           break;
         case 'sudo':
           output = commands.sudo(args);
@@ -240,8 +279,10 @@ const Terminal = () => {
 
     // Use typewriter effect for output if there is any
     if (output) {
-      typewriterEffect(output, () => {
-        setHistory(prev => [...prev, { type: 'output', content: output }]);
+      typewriterEffect(output, (finalText) => {
+        if (finalText) {
+           setHistory(prev => [...prev, { type: 'output', content: finalText }]);
+        }
       });
     }
   };
@@ -273,6 +314,28 @@ const Terminal = () => {
     } else if (e.key === 'PageDown') {
       e.preventDefault();
       containerRef.current?.scrollBy({ top: 50, behavior: 'smooth' });
+    } else if (e.key === 'Tab') {
+      e.preventDefault();
+      const parts = input.trim().split(' ');
+      const currentCmd = parts[0].toLowerCase();
+      const currentArg = parts[1] || '';
+
+      // Command Autocomplete
+      if (parts.length === 1) {
+        const matches = Object.keys(commands).filter(cmd => cmd.startsWith(currentCmd));
+        if (matches.length === 1) {
+          setInput(matches[0] + ' ');
+        }
+      }
+      // File/Dir Autocomplete
+      else if (parts.length === 2) {
+        const currentDir = getCurrentDir();
+        const files = Object.keys(currentDir.children || {});
+        const matches = files.filter(f => f.startsWith(currentArg));
+        if (matches.length === 1) {
+          setInput(`${currentCmd} ${matches[0]}`);
+        }
+      }
     }
   };
 
@@ -299,7 +362,24 @@ const Terminal = () => {
       </div>
 
       {/* Terminal Window */}
-      <div ref={terminalRef} className="terminal-crt bg-neutral-950 rounded-lg border border-neutral-800 shadow-2xl overflow-hidden relative">
+      <div ref={terminalRef} className={`terminal-crt bg-neutral-950 rounded-lg border border-neutral-800 shadow-2xl overflow-hidden relative transition-all duration-300 ${isCrashing ? 'animate-shake blur-sm' : ''} ${startBoot ? 'terminal-turn-on' : 'opacity-0'}`}>
+        {/* Matrix Rain Overlay */}
+        {showMatrix && (
+          <div className="absolute inset-0 z-20 bg-black/90 overflow-hidden font-mono text-green-500 text-xs leading-none opacity-80 pointer-events-none">
+             {Array.from({ length: 50 }).map((_, i) => (
+               <div key={i} className="absolute top-0 animate-matrix" style={{
+                 left: `${Math.random() * 100}%`,
+                 animationDuration: `${1 + Math.random() * 2}s`,
+                 animationDelay: `${Math.random() * 2}s`
+               }}>
+                 {Array.from({ length: 20 }).map((_, j) => (
+                   <div key={j}>{String.fromCharCode(0x30A0 + Math.random() * 96)}</div>
+                 ))}
+               </div>
+             ))}
+          </div>
+        )}
+
         {/* CRT Overlay Effects */}
         <div className="terminal-flicker absolute inset-0 pointer-events-none z-10 opacity-50 mix-blend-overlay"></div>
 
@@ -308,7 +388,7 @@ const Terminal = () => {
           <div className="w-3 h-3 rounded-full bg-red-500/80 shadow-[0_0_8px_rgba(239,68,68,0.6)]" />
           <div className="w-3 h-3 rounded-full bg-yellow-500/80 shadow-[0_0_8px_rgba(234,179,8,0.6)]" />
           <div className="w-3 h-3 rounded-full bg-green-500/80 shadow-[0_0_8px_rgba(34,197,94,0.6)]" />
-          <span className="ml-2 text-neutral-500 text-xs tracking-wider">guest@grandmaster-portfolio: {currentPath.join('/')}</span>
+          <span className="ml-2 text-neutral-500 text-xs tracking-wider">guest@rajan-portfolio: {currentPath.join('/')}</span>
         </div>
 
         {/* Scrollable Content Area */}
@@ -319,9 +399,9 @@ const Terminal = () => {
         >
           <div className="space-y-2 relative z-0">
             {history.map((entry, i) => (
-              <div key={i} className={`${entry.type === 'input' ? 'text-neutral-300' : 'text-gold-500 text-glow'} whitespace-pre-wrap`}>
+              <div key={i} className={`${entry.type === 'input' ? 'text-neutral-300' : `text-${theme}-500 ${theme === 'gold' ? 'text-glow' : `text-glow-${theme}`}`} whitespace-pre-wrap`}>
                 {entry.type === 'input' && (
-                  <span className="text-green-500 mr-2 text-glow-green">➜ {entry.path}</span>
+                  <span className={`text-${theme === 'gold' ? 'green' : theme}-500 mr-2 ${theme === 'gold' ? 'text-glow-green' : `text-glow-${theme}`}`}>➜ {entry.path}</span>
                 )}
                 {entry.content}
               </div>
@@ -329,15 +409,15 @@ const Terminal = () => {
             
             {/* Typing animation output */}
             {typingOutput !== null && (
-              <div className="text-gold-500 text-glow whitespace-pre-wrap">
+              <div className={`text-${theme}-500 ${theme === 'gold' ? 'text-glow' : `text-glow-${theme}`} whitespace-pre-wrap`}>
                 {typingOutput}
-                <span className="inline-block w-2 h-4 bg-gold-500 ml-1 cursor-blink"></span>
+                <span className={`inline-block w-2 h-4 bg-${theme}-500 ml-1 cursor-blink`}></span>
               </div>
             )}
             
             {!isBooting && (
               <div className="flex items-center flex-wrap">
-                <span className="text-green-500 text-glow-green mr-2 shrink-0">➜ {currentPath.join('/')}</span>
+                <span className={`text-${theme === 'gold' ? 'green' : theme}-500 ${theme === 'gold' ? 'text-glow-green' : `text-glow-${theme}`} mr-2 shrink-0`}>➜ {currentPath.join('/')}</span>
                 
                 {/* Hidden Input for capturing keystrokes */}
                 <input 
@@ -355,7 +435,7 @@ const Terminal = () => {
                 <div className="relative text-neutral-200 text-glow whitespace-pre-wrap break-all">
                   {input}
                   <span 
-                    className={`inline-block w-2.5 h-5 bg-gold-500 align-middle ml-0.5 ${isFocused ? 'cursor-blink' : 'opacity-50'}`}
+                    className={`inline-block w-2.5 h-5 bg-${theme}-500 align-middle ml-0.5 ${isFocused ? 'cursor-blink' : 'opacity-50'}`}
                   ></span>
                 </div>
               </div>

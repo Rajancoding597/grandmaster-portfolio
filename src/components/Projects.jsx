@@ -22,7 +22,7 @@ const PROJECTS = [
       github: null,
       demo: null
     },
-    date: "2024",
+    date: "2023",
     color: "gold"
   },
   {
@@ -42,7 +42,7 @@ const PROJECTS = [
     techStack: ["JavaScript ES6+", "Bootstrap 5", "jQuery", "REST API", "HTML5", "CSS3"],
     links: {
       github: null,
-      demo: "https://shrutig-287.github.io/Covid-Website/"
+      demo: null
     },
     date: "2021",
     color: "neutral"
@@ -67,7 +67,7 @@ const PROJECTS = [
       github: null,
       demo: null
     },
-    date: "2023",
+    date: "2024",
     color: "gold",
     learned: "Gained deep expertise in formal language theory, compiler design patterns, and building maintainable interpreters. Mastered the Visitor Pattern for extensible AST operations."
   }

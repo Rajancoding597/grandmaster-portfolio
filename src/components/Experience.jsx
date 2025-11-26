@@ -105,7 +105,7 @@ const EXPERIENCES = [
         impact: "Strong academic foundation"
       }
     ],
-    skills: ["DSA", "OOP", "DBMS", "Machine Learning", "Computer Networks"]
+    skills: ["Data Structures and Algorithms", "OOP", "DBMS", "AI | ML", "Computer Networks"]
   }
 ];
 

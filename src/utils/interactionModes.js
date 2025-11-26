@@ -51,23 +51,9 @@ export const PUZZLES = {
  * Get random interaction mode
  */
 export function getInteractionMode() {
-  // Check if already set in session
-  const existingMode = sessionStorage.getItem('chessInteractionMode');
-  if (existingMode && ['autoplay', 'puzzle', 'click'].includes(existingMode)) {
-    console.log(`♻️ Using cached interaction mode: ${existingMode}`);
-    return existingMode;
-  }
-  
   // Randomly select mode
   const modes = ['autoplay', 'puzzle', 'click'];
   const randomMode = modes[Math.floor(Math.random() * modes.length)];
-  
-  // Cache for session
-  try {
-    sessionStorage.setItem('chessInteractionMode', randomMode);
-  } catch (e) {
-    console.warn('Could not cache interaction mode:', e);
-  }
   
   console.log(`🎲 Selected interaction mode: ${randomMode}`);
   return randomMode;

@@ -27,7 +27,7 @@ const About = () => {
           <div className="flex flex-col md:flex-row justify-between items-center border-b border-neutral-800 pb-4">
             <div>
               <h3 className="text-2xl font-bold text-neutral-100">Rajan Dhiman</h3>
-              <p className="text-gold-500 font-mono text-sm">Grandmaster Candidate</p>
+              <p className="text-gold-500 font-mono text-sm">Software Engineer</p>
             </div>
             <div className="mt-2 md:mt-0 text-right">
               <p className="text-neutral-400 text-xs uppercase tracking-wider">Federation</p>
