@@ -1,6 +1,8 @@
 import React, { memo } from 'react';
 import { motion } from 'framer-motion';
 import { Briefcase, GraduationCap, Trophy, TrendingUp, Users, Zap } from 'lucide-react';
+import SpotlightCard from './ReactBits/SpotlightCard';
+import DecryptedText from './ReactBits/DecryptedText';
 
 const EXPERIENCES = [
   {
@@ -100,7 +102,16 @@ const Experience = () => {
       >
         <h2 className="text-4xl font-bold text-neutral-100 flex items-center justify-center gap-3 mb-4">
           <Trophy className="text-gold-500" />
-          Career Moves
+          <DecryptedText
+            text="Career Moves"
+            speed={50}
+            maxIterations={12}
+            sequential={true}
+            revealDirection="center"
+            animateOn="view"
+            className="text-neutral-100"
+            encryptedClassName="text-gold-500/30"
+          />
         </h2>
         <p className="text-neutral-400 text-lg">Strategic positions played across the board</p>
       </motion.div>
@@ -124,7 +135,8 @@ const Experience = () => {
             </div>
 
             {/* Content Card */}
-            <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-neutral-900/80 backdrop-blur-sm p-6 rounded-xl border border-neutral-800 hover:border-gold-500/50 transition-all shadow-xl hover:shadow-2xl hover:shadow-gold-500/10 group-hover:scale-[1.02]">
+            <SpotlightCard className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] rounded-xl" spotlightColor="rgba(212, 175, 55, 0.12)">
+            <div className="bg-neutral-900/80 backdrop-blur-sm p-6 rounded-xl border border-neutral-800 hover:border-gold-500/50 transition-all shadow-xl hover:shadow-2xl hover:shadow-gold-500/10 group-hover:scale-[1.02]">
               {/* Header */}
               <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-3 gap-2">
                 <div>
@@ -170,6 +182,7 @@ const Experience = () => {
                 ))}
               </div>
             </div>
+            </SpotlightCard>
           </motion.div>
         ))}
       </div>

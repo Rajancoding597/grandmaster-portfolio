@@ -1,6 +1,8 @@
 import React, { memo } from 'react';
 import { motion } from 'framer-motion';
 import { ExternalLink, Github, Code2 } from 'lucide-react';
+import SpotlightCard from './ReactBits/SpotlightCard';
+import DecryptedText from './ReactBits/DecryptedText';
 
 const PROJECTS = [
   {
@@ -32,7 +34,17 @@ const Projects = () => {
   return (
     <section className="py-20 px-4 md:px-8 max-w-5xl mx-auto relative">
       <h2 className="text-3xl font-bold text-center mb-4 text-neutral-100 flex items-center justify-center gap-3">
-        <Code2 className="text-gold-500" /> Games Played
+        <Code2 className="text-gold-500" />
+        <DecryptedText
+          text="Games Played"
+          speed={50}
+          maxIterations={12}
+          sequential={true}
+          revealDirection="center"
+          animateOn="view"
+          className="text-neutral-100"
+          encryptedClassName="text-gold-500/30"
+        />
       </h2>
       <p className="text-center text-neutral-400 mb-20 max-w-2xl mx-auto">
         Strategic moves in code. Each project represents a carefully calculated opening, 
@@ -68,6 +80,7 @@ const Projects = () => {
               )}
 
               {/* Project Card */}
+              <SpotlightCard className="rounded-lg" spotlightColor="rgba(212, 175, 55, 0.15)">
               <div 
                 className={`relative bg-neutral-900 border-2 ${isGold ? 'border-gold-500/40' : 'border-neutral-800'} rounded-lg p-8 shadow-2xl hover:shadow-gold-500/20 transition-all duration-500 hover:scale-[1.02] hover:border-gold-500/60 group overflow-hidden`}
               >
@@ -164,6 +177,7 @@ const Projects = () => {
                   <span className="text-xs text-neutral-600 font-mono">{project.date}</span>
                 </div>
               </div>
+              </SpotlightCard>
             </motion.div>
           );
         })}

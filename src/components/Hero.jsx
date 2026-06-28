@@ -1,6 +1,8 @@
 import React, { useState, useCallback, memo } from 'react';
 import { motion } from 'framer-motion';
 import { Code, Cpu, Database, Globe, Terminal } from 'lucide-react';
+import ShinyText from './ReactBits/ShinyText';
+import DecryptedText from './ReactBits/DecryptedText';
 import ChessBoard3D from './ChessBoard3D';
 
 const Hero = ({ onGameStart, gameStarted }) => {
@@ -77,10 +79,22 @@ const Hero = ({ onGameStart, gameStarted }) => {
               >
                 <div className="flex items-center gap-3 mb-4">
                   <span className="h-px w-12 bg-gold-500"></span>
-                  <h2 className="text-gold-500 font-mono text-sm md:text-base tracking-widest">SOFTWARE ENGINEER @ ORACLE</h2>
+                  <h2 className="font-mono text-sm md:text-base tracking-widest">
+                    <ShinyText text="SOFTWARE ENGINEER @ ORACLE" speed={3} color="#d4af37" shineColor="#fff8dc" className="font-mono" />
+                  </h2>
                 </div>
                 <h1 className="text-5xl md:text-7xl font-bold text-neutral-100 tracking-tight leading-tight">
-                  Rajan Dhiman
+                  <DecryptedText
+                    text="Rajan Dhiman"
+                    speed={40}
+                    maxIterations={15}
+                    sequential={true}
+                    revealDirection="start"
+                    animateOn="view"
+                    className="text-neutral-100"
+                    encryptedClassName="text-gold-500/40"
+                    characters="♟♞♝♜♛♚⚡★◆▸"
+                  />
                 </h1>
                 <p className="text-neutral-400 text-xl md:text-2xl mt-4 font-light max-w-2xl">
                   Bridging the gap between <span className="text-white font-medium relative inline-block">
