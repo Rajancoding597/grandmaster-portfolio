@@ -47,8 +47,8 @@ const About = () => {
           </div>
 
           <p className="text-neutral-400 leading-relaxed text-sm">
-            Associate Software Engineer at Oracle with a strategic mindset honed by Competitive Programming and Chess. 
-            Specializing in Java, OracleJET, and building robust entity relationship frameworks. 
+            Software Engineer at Oracle with 2+ years of experience building enterprise security and identity systems. 
+            Specializing in OAuth 2.0, SAML 2.0 migrations, and AI-assisted development workflows. 
             Always looking for the best move in complex systems.
           </p>
         </div>

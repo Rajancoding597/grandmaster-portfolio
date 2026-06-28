@@ -96,8 +96,7 @@ const Hero = ({ onGameStart, gameStarted }) => {
                 transition={{ delay: 1.0 }}
                 className="text-neutral-500 leading-relaxed max-w-xl text-lg"
               >
-                I bring the strategic depth of a <span className="text-gold-500 font-medium">FIDE-rated chess player</span> to software architecture. 
-                Whether optimizing distributed workflows at Oracle or mastering 1000+ LeetCode problems, I make sure every move delivers performance, reliability, and a winning endgame.
+                Software Engineer at Oracle with 2+ years of experience building enterprise security and identity systems. I bring the strategic depth of a <span className="text-gold-500 font-medium">FIDE-rated chess player</span> to software architecture. From OAuth 2.0 and SAML 2.0 migrations to AI-assisted development workflows, I make sure every move delivers performance, reliability, and a winning endgame.
               </motion.p>
 
               <motion.div 
@@ -106,7 +105,7 @@ const Hero = ({ onGameStart, gameStarted }) => {
                 transition={{ delay: 1.2 }}
                 className="flex flex-wrap gap-3 pt-4"
               >
-                {['Java', 'Microservices', 'SQL', 'Python', 'Amazon S3', 'C | C++', 'AI | ML', "Rest API's", 'TypeScript','React'].map((tech) => (
+                {['Java', 'Spring Boot', 'OAuth 2.0', 'Node.js', 'TypeScript', 'Playwright', 'AI / Codex', 'REST APIs', 'AWS', 'C++'].map((tech) => (
                   <span key={tech} className="px-4 py-2 bg-neutral-900/50 border border-neutral-800 rounded-full text-neutral-300 text-sm hover:border-gold-500/50 hover:text-gold-500 transition-colors cursor-default flex items-center gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-neutral-600"></span>
                     {tech}

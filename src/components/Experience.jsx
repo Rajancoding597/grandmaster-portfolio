@@ -5,91 +5,71 @@ import { Briefcase, GraduationCap, Trophy, TrendingUp, Users, Zap } from 'lucide
 const EXPERIENCES = [
   {
     id: 1,
-    role: "Software Engineer",
+    role: "Associate Software Engineer | Oracle Restaurants (FBGIU) Department",
     company: "Oracle",
-    period: "July 2024 – Present",
+    period: "Aug 2024 – Present",
     type: "Full-time",
-    location: "Hyderabad, India",
+    location: "Hyderabad, Telangana, India",
     achievements: [
       {
-        icon: TrendingUp,
-        text: "Engineered backend services in Java and SQL",
-        impact: "+20% traffic handling without degradation"
-      },
-      {
-        icon: Zap,
-        text: "Authored backend tokenized export system for multitenant DB",
-        impact: "3× faster file generation"
-      },
-      {
         icon: Users,
-        text: "Led migration to OAuth with Oracle IAM",
-        impact: "Reduced auth-related failures"
-      },
-      {
-        icon: TrendingUp,
-        text: "Optimized SQL queries and long-running APIs",
-        impact: "40-60% faster response times"
+        text: "Contributed to enterprise identity migration from in-house IDM to Oracle IAM (OAuth 2.0)",
+        impact: "Implemented SAML 2.0 SSO for a client with 2M+ users"
       },
       {
         icon: Zap,
-        text: "Integrated features into CI/CD pipelines",
-        impact: "20% fewer release issues"
+        text: "Developed core token validation logic and enabled secure login",
+        impact: "Supported multiple products previously on legacy IDM"
+      },
+      {
+        icon: TrendingUp,
+        text: "Built custom session management features",
+        impact: "Refresh token flows and idle/manual/permission-denied logout handling"
+      },
+      {
+        icon: Zap,
+        text: "Applied Codex-driven AI workflows for code generation, refactoring, debugging, and test scaffolding",
+        impact: "Maintained quality with manual review guardrails"
+      },
+      {
+        icon: TrendingUp,
+        text: "Built AI-assisted internal GUI tools to automate build generation and deployment prep",
+        impact: "Reduced manual developer effort"
       }
     ],
-    skills: ["Java", "SQL", "OracleJET", "OAuth", "REST APIs", "CI/CD"]
+    skills: ["Java", "Spring Boot", "OAuth 2.0", "IAM", "Python", "AI-Assisted Dev"]
   },
   {
     id: 2,
-    role: "Software Engineer Intern",
+    role: "Associate Software Engineer Internship",
     company: "Oracle",
-    period: "January 2024 – June 2024",
-    type: "Internship",
-    location: "Hyderabad, India",
-    achievements: [
-      {
-        icon: TrendingUp,
-        text: "Serviced ER framework using Python-based analysis on SQL data",
-        impact: "30% better cross-module integration"
-      },
-      {
-        icon: Users,
-        text: "Improved UI components with OracleJET",
-        impact: "25% reduction in UI inconsistencies"
-      },
-      {
-        icon: Zap,
-        text: "Collaborated with cross-functional teams",
-        impact: "Agile feature delivery"
-      }
-    ],
-    skills: ["Python", "SQL", "OracleJET", "Agile"]
-  },
-  {
-    id: 3,
-    role: "Business Intelligence Analyst Intern",
-    company: "InfoEdge (Naukri.com)",
-    period: "May 2023 – July 2023",
+    period: "Jan 2024 – Jul 2024",
     type: "Internship",
     location: "Remote",
     achievements: [
       {
         icon: TrendingUp,
-        text: "Established usage-drop detection system for at-risk clients",
-        impact: "10-12% churn reduction in pilots"
-      },
-      {
-        icon: Zap,
-        text: "Developed interactive dashboards for customer success teams",
-        impact: "50% less manual reporting time"
-      },
-      {
-        icon: Users,
-        text: "Analyzed large-scale behavioral datasets",
-        impact: "Multiple product improvements"
+        text: "Built a Python-based ER data mapping framework on Oracle SQL product schemas",
+        impact: "Improved data relationships visibility by 30% and accelerated cross-module integration workflows"
       }
     ],
-    skills: ["SQL", "Python", "Tableau", "Apache Zeppelin", "Amazon S3"]
+    skills: ["Python", "Oracle Database", "SQL"]
+  },
+  {
+    id: 3,
+    role: "Business Intelligence Analyst | BI Team of Naukri.com",
+    company: "Info Edge India Ltd",
+    period: "May 2023 – Jul 2023",
+    type: "Internship",
+    location: "Noida, Uttar Pradesh, India",
+    achievements: [
+      {
+        icon: TrendingUp,
+        text: "Built Python + SQL usage drop detection system",
+        impact: "Enabled 20% lower churn risk through proactive retention targeting"
+      }
+    ],
+    skills: ["SQL", "Python", "Data Analysis"]
   },
   {
     id: 4,
@@ -105,7 +85,7 @@ const EXPERIENCES = [
         impact: "Strong academic foundation"
       }
     ],
-    skills: ["Data Structures and Algorithms", "OOP", "DBMS", "AI | ML", "Computer Networks"]
+    skills: ["Data Structures and Algorithms", "OOP", "DBMS", "Computer Networks"]
   }
 ];
 

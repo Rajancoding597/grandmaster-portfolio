@@ -5,71 +5,26 @@ import { ExternalLink, Github, Code2 } from 'lucide-react';
 const PROJECTS = [
   {
     id: 1,
-    name: "Klean (World Cleaners)",
-    tagline: "Crowdsourced Urban Cleanup Through Real-Time Geolocation",
-    category: "Full Stack",
-    description: "A citizen-powered web platform that enables instant reporting of illegal garbage dumps using live GPS coordinates and photographic evidence, bridging the gap between communities and municipal authorities.",
-    overview: "Municipal authorities struggle to identify random, unpredictable garbage dumps across urban areas. Klean solves this by empowering citizens to become environmental watchdogs—capturing precise dump locations with GPS and visual proof, creating a real-time cleanup map for city workers.",
+    name: "FlowLens.AI",
+    tagline: "Product-Aware AI Testing Agent for Enterprise UI Workflows",
+    category: "AI / QA Platform",
+    description: "Built a product-aware UI testing agent that converts natural-language test goals into validated browser workflows, evidence-backed reports, and bug-ready findings — without brittle scripts.",
+    overview: "Pipeline: Product knowledge + user goal → workflow planner → workflow validator → guarded browser runner → evidence collector → report writer",
     features: [
-      "High-precision geolocation (7 decimal places) via HTML5 API",
-      "Binary image storage directly in MongoDB for evidence tracking",
-      "In-memory file processing with Multer for optimized upload speeds",
-      "Mobile-first UI with Framer Motion animations",
-      "Single-page reporting flow designed for on-the-go submissions"
+      "Designed a bounded agentic pipeline handling test case planning and runtime reasoning with TypeScript schemas and stop conditions",
+      "Integrated Codex-oriented AI provider abstraction with prompt guardrails for validated AI output",
+      "Built Playwright-backed browser execution layer with mock/fixture-friendly paths",
+      "Implemented SQLite-backed local storage for run artifacts, screenshots, and evidence reports",
+      "Architected as a monorepo (npm workspaces) with 15+ focused packages",
+      "Operator console built with Next.js + React for natural-language test input and report viewing"
     ],
-    techStack: ["React", "Node.js", "Express", "MongoDB", "Multer", "Framer Motion"],
+    techStack: ["Next.js", "TypeScript", "Node.js", "Playwright", "Codex", "SQLite", "Vitest", "REST APIs"],
     links: {
-      github: null,
+      github: "https://github.com/Rajancoding597/flowlens-ai",
       demo: null
     },
-    date: "2023",
+    date: "Apr 2026 – Jun 2026",
     color: "gold"
-  },
-  {
-    id: 2,
-    name: "COVID-19 Live Tracker",
-    tagline: "Real-Time Pandemic Intelligence Dashboard",
-    category: "Web App",
-    description: "A responsive public health platform delivering live COVID-19 statistics for Indian states with integrated educational resources for safety protocols and immunity guidance.",
-    overview: "Built during the pandemic to combat misinformation, this tracker provides verified, real-time data from official APIs alongside curated health guidelines. The hybrid architecture combines modern async JavaScript for data handling with Bootstrap 5 for mobile-responsive layouts.",
-    features: [
-      "Async API integration with covid19india endpoint for live metrics",
-      "Dynamic state-wise filtering (Confirmed, Deceased, Recovered, Vaccinated)",
-      "Custom analog clock visualization using CSS transforms",
-      "Mobile-first responsive design with Bootstrap 5 grids",
-      "Educational modules: Social distancing, immunity boosting, symptom checking"
-    ],
-    techStack: ["JavaScript ES6+", "Bootstrap 5", "jQuery", "REST API", "HTML5", "CSS3"],
-    links: {
-      github: null,
-      demo: null
-    },
-    date: "2021",
-    color: "neutral"
-  },
-  {
-    id: 3,
-    name: "Lambda Calculus Interpreter",
-    tagline: "Pure Functional Programming Language Engine",
-    category: "Backend / Academic",
-    description: "A Python-based interpreter implementing the theoretical foundations of functional programming through Lambda Calculus, featuring syntactic analysis, AST construction, and step-by-step reduction visualization.",
-    overview: "Developed as an academic major project at NIT Jalandhar, this interpreter demonstrates deep understanding of programming language theory. It uses the Visitor Pattern to cleanly separate AST traversal from evaluation logic, handling complex transformations like Alpha Conversion (variable renaming) and Beta Reduction (function application).",
-    features: [
-      "Modular architecture: Lexer → Parser (LL(1) Recursive Descent) → AST",
-      "Normal Order Reduction with step-by-step evaluation trace",
-      "Automatic Alpha Conversion to prevent variable capture",
-      "Visitor Pattern for clean separation of concerns",
-      "Custom error handling for syntax violations",
-      "Grammar support: λ-abstractions, applications, variables"
-    ],
-    techStack: ["Python", "AST Design", "Visitor Pattern", "Compiler Theory"],
-    links: {
-      github: null,
-      demo: null
-    },
-    date: "2024",
-    color: "gold",
-    learned: "Gained deep expertise in formal language theory, compiler design patterns, and building maintainable interpreters. Mastered the Visitor Pattern for extensible AST operations."
   }
 ];
 

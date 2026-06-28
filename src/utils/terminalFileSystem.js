@@ -5,9 +5,9 @@ export const fileSystem = {
       "projects": {
         type: "dir",
         children: {
-          "klean.txt": { type: "file", content: "🗺️ Project: Klean\nStack: React, Node.js, MongoDB\nDescription: A WebApp to Track Garbage Locations. Implemented Geolocation APIs and real-time tracking.\nRole: Full-stack Developer\nHighlights: Real-time location tracking, Interactive map interface" },
+          "flowlens.txt": { type: "file", content: "🤖 Project: FlowLens.AI\nStack: Next.js, TypeScript, Playwright, Codex\nDescription: AI-powered QA testing platform that converts product knowledge into structured test cases.\nRole: Creator\nHighlights: Agentic workflow, AI output validation, Evidence-backed reporting" },
           "portfolio.txt": { type: "file", content: "♟️ Project: Portfolio (This Site!)\nStack: React, Vite, Tailwind, Framer Motion\nDescription: A chess-themed interactive portfolio with a functional terminal.\nRole: Creator & Designer\nHighlights: Chess-themed UI, Interactive terminal, CRT effects" },
-          "churn_detection.py": { type: "file", content: "# 📊 InfoEdge Intern Project\n# Built automated customer usage drop detection system.\n# Reduced churn by proactively reaching out to at-risk clients.\n# Stack: Python, Data Analysis\n# Impact: Improved customer retention metrics" }
+          "churn_detection.py": { type: "file", content: "# 📊 InfoEdge Intern Project\n# Built automated customer usage drop detection system.\n# Reduced churn by proactively reaching out to at-risk clients.\n# Stack: Python, SQL\n# Impact: 20% lower churn risk" }
         }
       },
       "about.txt": { 
@@ -18,15 +18,15 @@ export const fileSystem = {
 
 📍 Role: Associate Software Engineer @ Oracle
 🎓 Education: B.Tech in Computer Science
-📅 Experience: 1+ years in software development
+📅 Experience: 2+ years building enterprise systems
 
 ♟️ FIDE Rated Chess Player (1597)
 🏆 Competitive Programmer (CodeChef 2033)
 
 🛠️ Top Skills:
-   • Java & OracleJET
-   • React & Modern JavaScript
-   • SQL & Database Design
+   • Java & Spring Boot
+   • OAuth 2.0 & IAM
+   • AI-Assisted Dev (Codex, Next.js, Playwright)
    • REST APIs & Backend Development
 
 🎯 Currently: Building scalable enterprise solutions
@@ -41,8 +41,8 @@ export const fileSystem = {
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 📧 Email: rajaninvest597@gmail.com
-🔗 LinkedIn: linkedin.com/in/rajan-dhiman
-💻 GitHub: github.com/rajan-dhiman
+🔗 LinkedIn: linkedin.com/in/rajan-dhiman-2a070920b/
+💻 GitHub: github.com/Rajancoding597
 
 📍 Location: India (IST Timezone)
 🟢 Status: Open to opportunities
@@ -86,7 +86,7 @@ export const commands = {
   👤 RAJAN DHIMAN | Software Engineer
   ---------------------------------------------------
   📍 Role: Associate Software Engineer @ Oracle
-  🛠️ Stack: Java, React, SQL, OracleJET
+  🛠️ Stack: Java, Spring Boot, OAuth 2.0, Next.js, AI/Codex
   🏆 Rating: 2033 (CodeChef) | 1597 (FIDE)
   
   Looking for a developer who thinks 10 moves ahead?
@@ -117,7 +117,7 @@ Initiating hiring protocol...
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓ 100%
 
 ✓ Email client opened successfully!
-✓ LinkedIn: linkedin.com/in/rajan-dhiman
+✓ LinkedIn: linkedin.com/in/rajan-dhiman-2a070920b/
 📄 Resume: Use 'cat resume.pdf' to download
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
