@@ -1,6 +1,7 @@
 import React, { Suspense, useRef, useState, useEffect, useMemo, useCallback } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls, Environment, Lightformer, ContactShadows, Stars, Sparkles, Html, useGLTF } from '@react-three/drei';
+import { OrbitControls, Environment, Lightformer, ContactShadows, Stars, Sparkles, useGLTF, useProgress } from '@react-three/drei';
+import { motion } from 'framer-motion';
 import { Chess } from 'chess.js';
 import * as THREE from 'three';
 import { getRandomGame, getRandomPuzzle, getInteractionMode } from '../utils/interactionModes';
@@ -26,13 +27,20 @@ const easeInOut = (progress) => {
   return t * t * (3 - 2 * t);
 };
 
+const INTRO_HOLD_DURATION = 3000;
+const INTRO_FADE_DURATION = 900;
+const OPENING_REVEAL_DURATION = 900;
+
 // Load every type together, including pieces absent from the initial puzzle.
 useGLTF.preload(MODEL_URLS);
 
 class SceneErrorBoundary extends React.Component {
   state = { failed: false };
   static getDerivedStateFromError() { return { failed: true }; }
-  componentDidCatch(error) { console.error('Chess scene unavailable:', error); }
+  componentDidCatch(error) {
+    console.error('Chess scene unavailable:', error);
+    this.props.onFailed?.();
+  }
   render() {
     if (this.state.failed) return (
       <div role="status" className="absolute inset-0 flex items-center justify-center px-6 text-center text-neutral-300">
@@ -43,8 +51,25 @@ class SceneErrorBoundary extends React.Component {
   }
 }
 
-function SceneLoading() {
-  return <Html center><p role="status" className="whitespace-nowrap font-mono text-sm text-gold-500">Setting the board…</p></Html>;
+function OpeningLoader({ visible }) {
+  const { progress } = useProgress();
+  const displayedProgress = visible ? Math.min(98, Math.max(6, Math.round(progress))) : 100;
+
+  return (
+    <div
+      aria-live="polite"
+      aria-busy={visible}
+      className={`absolute inset-0 z-[60] flex items-center justify-center bg-[#050505] transition-opacity duration-500 ${visible ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
+    >
+      <div className="w-52 text-center sm:w-60">
+        <div className="mx-auto mb-5 h-9 w-9 rounded-full border border-gold-500/30 border-t-gold-500 animate-spin" />
+        <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-gold-500">Preparing the opening</p>
+        <div className="mt-4 h-px overflow-hidden bg-white/10">
+          <div className="h-full bg-gold-500 transition-[width] duration-300 ease-out" style={{ width: `${displayedProgress}%` }} />
+        </div>
+      </div>
+    </div>
+  );
 }
 
 // Board Square
@@ -125,7 +150,7 @@ function CameraReveal({ revealStartedAt, isMobile, prefersReducedMotion }) {
   return null;
 }
 
-function ChessScene({ onRevealRequest, onReady, onStatus, mode = 'click', revealStartedAt = null, prefersReducedMotion = false }) {
+function ChessScene({ onRevealRequest, onReady, onStatus, onBoardInteract, mode = 'click', revealStartedAt = null, prefersReducedMotion = false }) {
   const loadedModels = useGLTF(MODEL_URLS);
   const models = Object.fromEntries(Object.keys(PIECE_MODELS).map((type, index) => [type, loadedModels[index].scene]));
   const undoTimer = useRef(null);
@@ -201,6 +226,8 @@ function ChessScene({ onRevealRequest, onReady, onStatus, mode = 'click', reveal
   // Interaction
   const handleSquareClick = (rowIndex, colIndex) => {
     if (mode === 'autoplay' || isRevealing || isUndoPending) return;
+
+    onBoardInteract?.();
 
     const square = getSquareFromIndex(rowIndex, colIndex);
     const piece = board[rowIndex][colIndex];
@@ -362,15 +389,30 @@ function ChessScene({ onRevealRequest, onReady, onStatus, mode = 'click', reveal
 export default function ChessBoard3D({ onGameStart, onRevealStart }) {
   const [mode, setMode] = useState('click');
   const [sceneReady, setSceneReady] = useState(false);
+  const [isOpeningReady, setIsOpeningReady] = useState(false);
   const [status, setStatus] = useState('');
-  const handleSceneReady = useCallback(() => setSceneReady(true), []);
+  const [viewportWidth, setViewportWidth] = useState(() => window.innerWidth);
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
   const [isRevealing, setIsRevealing] = useState(false);
   const [isSkipReveal, setIsSkipReveal] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  const [isIntroVisible, setIsIntroVisible] = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  const [isIntroDocked, setIsIntroDocked] = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches);
   const [revealStartedAt, setRevealStartedAt] = useState(null);
   const revealStartedRef = useRef(false);
   const completionTimerRef = useRef(null);
+  const openingReadyRef = useRef(false);
+  const openingFrameRef = useRef(null);
+  const dockIntro = useCallback(() => setIsIntroDocked(true), []);
+  const handleSceneReady = useCallback(() => {
+    setSceneReady(true);
+    if (openingReadyRef.current) return;
+
+    openingReadyRef.current = true;
+    openingFrameRef.current = window.requestAnimationFrame(() => {
+      openingFrameRef.current = window.requestAnimationFrame(() => setIsOpeningReady(true));
+    });
+  }, []);
 
   const handleRevealRequest = useCallback(({ hasMove = false } = {}) => {
     if (revealStartedRef.current) return;
@@ -387,7 +429,41 @@ export default function ChessBoard3D({ onGameStart, onRevealStart }) {
     );
   }, [onGameStart, onRevealStart, prefersReducedMotion]);
 
-  useEffect(() => () => window.clearTimeout(completionTimerRef.current), []);
+  useEffect(() => () => {
+    window.clearTimeout(completionTimerRef.current);
+    window.cancelAnimationFrame(openingFrameRef.current);
+  }, []);
+
+  useEffect(() => {
+    if (prefersReducedMotion) {
+      setIsIntroVisible(true);
+      return undefined;
+    }
+
+    if (!isOpeningReady) {
+      setIsIntroVisible(false);
+      return undefined;
+    }
+
+    const frame = window.requestAnimationFrame(() => setIsIntroVisible(true));
+    return () => window.cancelAnimationFrame(frame);
+  }, [isOpeningReady, prefersReducedMotion]);
+
+  useEffect(() => {
+    if (prefersReducedMotion) {
+      setIsIntroDocked(true);
+      return undefined;
+    }
+
+    if (!sceneReady || !isOpeningReady) {
+      setIsIntroDocked(false);
+      return undefined;
+    }
+
+    setIsIntroDocked(false);
+    const timer = window.setTimeout(dockIntro, INTRO_FADE_DURATION + INTRO_HOLD_DURATION);
+    return () => window.clearTimeout(timer);
+  }, [dockIntro, isOpeningReady, prefersReducedMotion, sceneReady]);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -404,6 +480,7 @@ export default function ChessBoard3D({ onGameStart, onRevealStart }) {
     
     // Detect mobile device for camera adjustment
     const checkMobile = () => {
+      setViewportWidth(window.innerWidth);
       setIsMobile(window.innerWidth < 768);
     };
     checkMobile();
@@ -416,17 +493,27 @@ export default function ChessBoard3D({ onGameStart, onRevealStart }) {
   // the board runs diagonally beneath the title, as in the portfolio artwork.
   const cameraPosition = isMobile ? [-9, 13, 11] : [-10.5, 12, 10.5];
   const cameraFov = isMobile ? 60 : 45;
+  const introWidth = Math.min(viewportWidth - 32, 896);
+  const introSideInset = isMobile ? 16 : 32;
+  const compactTitleWidth = isMobile ? 160 : 200;
+  const introDockX = (viewportWidth / 2) - introSideInset - (compactTitleWidth / 2) - (introWidth / 2);
+  const motionDuration = prefersReducedMotion ? 0 : 1.8;
+  const sceneVisibility = isRevealing ? 'opacity-0 pointer-events-none' : isOpeningReady ? 'opacity-100' : 'opacity-0 pointer-events-none';
+  const sceneFadeDuration = isRevealing
+    ? (prefersReducedMotion ? '300ms' : `${REVEAL.sceneFadeEnd - REVEAL.sceneFadeStart}ms`)
+    : `${OPENING_REVEAL_DURATION}ms`;
+  const sceneFadeDelay = isRevealing && !prefersReducedMotion ? `${REVEAL.sceneFadeStart}ms` : '0ms';
 
   return (
     <div className="w-full h-full min-h-screen relative bg-transparent overflow-hidden">
       <div
-        className={`w-full h-full bg-[#050505] transition-opacity ease-in-out ${isRevealing ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+        className={`w-full h-full bg-[#050505] transition-opacity ease-in-out ${sceneVisibility}`}
         style={{
-          transitionDelay: prefersReducedMotion ? '0ms' : `${REVEAL.sceneFadeStart}ms`,
-          transitionDuration: prefersReducedMotion ? '300ms' : `${REVEAL.sceneFadeEnd - REVEAL.sceneFadeStart}ms`,
+          transitionDelay: sceneFadeDelay,
+          transitionDuration: sceneFadeDuration,
         }}
       >
-      <SceneErrorBoundary>
+      <SceneErrorBoundary onFailed={() => setIsOpeningReady(true)}>
       <Canvas
         shadows
         dpr={1.75}
@@ -434,7 +521,7 @@ export default function ChessBoard3D({ onGameStart, onRevealStart }) {
         fallback={<div role="status" className="p-8 text-center text-neutral-300">The chess scene is unavailable. Skip to explore the portfolio.</div>}
         camera={{ position: cameraPosition, fov: cameraFov }}
       >
-        <Suspense fallback={<SceneLoading />}>
+        <Suspense fallback={null}>
         <color attach="background" args={['#050505']} />
         
         {/* Galaxy Background */}
@@ -491,6 +578,7 @@ export default function ChessBoard3D({ onGameStart, onRevealStart }) {
         />
         <ChessScene
           onRevealRequest={handleRevealRequest}
+          onBoardInteract={dockIntro}
           mode={mode}
           onReady={handleSceneReady}
           onStatus={setStatus}
@@ -507,7 +595,8 @@ export default function ChessBoard3D({ onGameStart, onRevealStart }) {
           minPolarAngle={Math.PI / 6}
           maxPolarAngle={Math.PI / 2.5}
           target={[0, 1.5, 0]}
-          enabled={sceneReady && !isRevealing}
+          enabled={sceneReady && isOpeningReady && !isRevealing}
+          onStart={dockIntro}
           autoRotate={mode === 'autoplay' && !isRevealing && !prefersReducedMotion}
           autoRotateSpeed={0.5}
         />
@@ -515,15 +604,43 @@ export default function ChessBoard3D({ onGameStart, onRevealStart }) {
       </Canvas>
       </SceneErrorBoundary>
 
-      <div className="absolute top-8 md:top-10 inset-x-4 text-center pointer-events-none">
-        <p className="text-[10px] md:text-xs font-mono uppercase tracking-[0.3em] text-gold-500/80 mb-3">The opening move</p>
-        <h2
-          aria-label="Welcome to Rajan Dhiman Portfolio."
-          className="mx-auto max-w-4xl bg-gradient-to-b from-white via-neutral-100 to-[#d4af37] bg-clip-text font-serif text-[clamp(2.15rem,5vw,4.5rem)] font-semibold leading-[0.95] tracking-[-0.055em] text-transparent drop-shadow-[0_5px_24px_rgba(212,175,55,0.16)]"
+      <motion.div
+        initial={false}
+        className="absolute z-20 overflow-visible pointer-events-none text-center will-change-transform"
+        style={{
+          width: introWidth,
+          left: '50%',
+          top: isMobile ? '2rem' : '2.5rem',
+        }}
+        animate={{
+          x: isIntroDocked ? introDockX : -(introWidth / 2),
+          y: isIntroDocked ? -16 : 0,
+        }}
+        transition={{ duration: motionDuration, ease: [0.25, 0.1, 0.25, 1] }}
+      >
+        <motion.div
+          initial={false}
+          className="origin-top"
+          animate={{
+            opacity: isIntroVisible ? 1 : 0,
+            y: isIntroVisible ? 0 : 8,
+            scale: isIntroDocked ? (isMobile ? 0.42 : 0.34) : 1,
+          }}
+          transition={{
+            opacity: { duration: prefersReducedMotion ? 0 : INTRO_FADE_DURATION / 1000, ease: 'easeOut' },
+            y: { duration: prefersReducedMotion ? 0 : INTRO_FADE_DURATION / 1000, ease: 'easeOut' },
+            scale: { duration: motionDuration, ease: [0.25, 0.1, 0.25, 1] },
+          }}
         >
-          Welcome to <span className="italic">Rajan Dhiman</span> Portfolio.
-        </h2>
-      </div>
+          <p className={`overflow-hidden text-[10px] font-mono uppercase tracking-[0.3em] text-gold-500/80 transition-[opacity,max-height,margin] duration-[900ms] ease-in-out motion-reduce:transition-none md:text-xs ${isIntroDocked ? 'mb-0 max-h-0 opacity-0' : 'mb-3 max-h-6 opacity-100'}`}>The opening move</p>
+          <h2
+            className="mx-auto whitespace-nowrap bg-gradient-to-b from-white via-neutral-100 to-[#ead38b] bg-clip-text font-serif text-[clamp(2.45rem,4.25vw,3.85rem)] font-semibold leading-none tracking-[-0.05em] text-transparent drop-shadow-[0_5px_20px_rgba(212,175,55,0.14)]"
+          >
+            Rajan <span className="italic">Dhiman</span>
+          </h2>
+          <p className={`overflow-hidden text-xs font-medium tracking-[0.08em] text-neutral-300 transition-[opacity,max-height,margin] duration-[900ms] ease-in-out motion-reduce:transition-none md:text-sm ${isIntroDocked ? 'mt-0 max-h-0 opacity-0' : 'mt-3 max-h-6 opacity-100'}`}>Welcome to my portfolio.</p>
+        </motion.div>
+      </motion.div>
 
       {isSkipReveal && (
         <div
@@ -533,7 +650,7 @@ export default function ChessBoard3D({ onGameStart, onRevealStart }) {
       )}
       
       {/* Fixed Bottom-Right Skip Button - Responsive */}
-      <div className="absolute bottom-6 right-1/2 translate-x-1/2 md:translate-x-0 md:right-8 md:bottom-8 z-50">
+      <div className={`absolute bottom-6 right-1/2 translate-x-1/2 md:translate-x-0 md:right-8 md:bottom-8 z-50 transition-[opacity,transform] duration-500 delay-[250ms] ${isOpeningReady ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
         <button
           onClick={() => handleRevealRequest()}
           disabled={isRevealing}
@@ -544,7 +661,7 @@ export default function ChessBoard3D({ onGameStart, onRevealStart }) {
         </button>
       </div>
       
-      <div className="absolute bottom-24 md:bottom-8 left-4 md:left-8 right-4 md:right-auto md:max-w-sm text-center md:text-left pointer-events-none">
+      <div className={`absolute bottom-24 md:bottom-8 left-4 md:left-8 right-4 md:right-auto md:max-w-sm text-center md:text-left pointer-events-none transition-opacity duration-500 delay-[250ms] ${isOpeningReady ? 'opacity-100' : 'opacity-0'}`}>
         <p className="text-[10px] tracking-[0.2em] uppercase font-mono text-gold-500 mb-2">
           {mode === 'autoplay' ? 'Famous game replay' : mode === 'puzzle' ? 'Tactical challenge' : 'Your move'}
         </p>
@@ -553,6 +670,7 @@ export default function ChessBoard3D({ onGameStart, onRevealStart }) {
         </p>
       </div>
       </div>
+      <OpeningLoader visible={!isOpeningReady} />
     </div>
   );
 }
