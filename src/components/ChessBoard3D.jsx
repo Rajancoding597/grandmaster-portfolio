@@ -10,6 +10,7 @@ import ChessPieceModel from './ChessPieceModel';
 import ChessBoardFrame from './ChessBoardFrame';
 import Moon from './Moon';
 import SpaceBackdrop, { SpaceFinish } from './SpaceBackdrop';
+import Meteors from './Meteors';
 
 export const REVEAL = {
   duration: 3600,
@@ -528,6 +529,7 @@ export default function ChessBoard3D({ onGameStart, onRevealStart }) {
         <SpaceBackdrop prefersReducedMotion={prefersReducedMotion} />
 
         <Moon />
+        <Meteors prefersReducedMotion={prefersReducedMotion} />
 
         {/* Main ambient light */}
         <ambientLight intensity={0.8} /> 
