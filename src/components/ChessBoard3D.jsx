@@ -1,6 +1,6 @@
 import React, { Suspense, useRef, useState, useEffect, useMemo, useCallback } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls, Environment, Lightformer, ContactShadows, useGLTF, useProgress } from '@react-three/drei';
+import { OrbitControls, Environment, Lightformer, useGLTF, useProgress } from '@react-three/drei';
 import { motion } from 'framer-motion';
 import { Chess } from 'chess.js';
 import * as THREE from 'three';
@@ -568,8 +568,6 @@ export default function ChessBoard3D({ onGameStart, onRevealStart }) {
           <Lightformer position={[-5, 2, 1]} rotation={[0, Math.PI / 2, 0]} scale={[3, 8, 1]} intensity={3} color="#fff0d6" />
           <Lightformer position={[5, 3, -2]} rotation={[0, -Math.PI / 2, 0]} scale={[3, 8, 1]} intensity={2} color="#dce5ff" />
         </Environment>
-        <ContactShadows position={[0, -1.96, 0]} resolution={1024} scale={20} blur={2} opacity={0.4} far={3} color="#000000" />
-        
         <CameraReveal
           revealStartedAt={revealStartedAt}
           isMobile={isMobile}
