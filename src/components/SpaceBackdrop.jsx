@@ -22,10 +22,10 @@ export default function SpaceBackdrop({ prefersReducedMotion = false }) {
         <sphereGeometry args={[145, 96, 64]} />
         <meshBasicMaterial
           map={deepStarMap}
-          color="#9aa9d0"
+          color="#b2c0e8"
           side={THREE.BackSide}
           transparent
-          opacity={0.22}
+          opacity={0.28}
           depthWrite={false}
           toneMapped={false}
         />
@@ -65,7 +65,7 @@ export function SpaceFinish() {
   return (
     <EffectComposer multisampling={8} frameBufferType={THREE.HalfFloatType}>
       <Bloom luminanceThreshold={1.15} intensity={0.2} radius={0.55} mipmapBlur />
-      <Vignette eskil={false} offset={0.24} darkness={0.42} blendFunction={BlendFunction.NORMAL} />
+      <Vignette eskil={false} offset={0.24} darkness={0.35} blendFunction={BlendFunction.NORMAL} />
       <Noise opacity={0.012} blendFunction={BlendFunction.SOFT_LIGHT} />
       <ToneMapping mode={ToneMappingMode.ACES_FILMIC} middleGrey={0.78} />
     </EffectComposer>

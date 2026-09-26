@@ -3,8 +3,8 @@ import { useFrame, useThree } from '@react-three/fiber';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 
-const MIN_INTERVAL_MS = 12000;
-const MAX_INTERVAL_MS = 28000;
+const MIN_INTERVAL_MS = 16000;
+const MAX_INTERVAL_MS = 32000;
 
 const randomBetween = (min, max) => min + Math.random() * (max - min);
 
@@ -32,18 +32,18 @@ function MeteorPass({ meteor, onComplete }) {
     <>
       <Trail
         target={headRef}
-        width={1.35}
-        length={8}
-        decay={1.15}
+        width={1.1}
+        length={15}
+        decay={1}
         stride={0.025}
         attenuation={(width) => width * width}
         color="#7698e6"
       />
       <Trail
         target={headRef}
-        width={0.48}
-        length={7}
-        decay={1.25}
+        width={0.38}
+        length={13}
+        decay={1}
         stride={0.02}
         attenuation={(width) => width * width}
         color="#fff0bd"
@@ -82,22 +82,28 @@ export default function Meteors({ prefersReducedMotion = false }) {
     right.crossVectors(forward, camera.up).normalize();
     up.crossVectors(right, forward).normalize();
 
-    const distance = randomBetween(42, 56);
+    // Most passes enter from the open right side. Left-side passes are farther
+    // away than the moon, so they are naturally occluded rather than cutting
+    // across its surface.
+    const side = Math.random() < 0.68 ? 1 : -1;
+    const distance = randomBetween(48, 62);
+    const startHeight = randomBetween(10, 13.5);
+    const endHeight = side === 1 ? randomBetween(3.5, 5.5) : randomBetween(6, 8);
     const start = camera.position.clone()
       .addScaledVector(forward, distance)
-      .addScaledVector(right, randomBetween(8, 14))
-      .addScaledVector(up, randomBetween(4.5, 7));
+      .addScaledVector(right, side * randomBetween(20, 27))
+      .addScaledVector(up, startHeight);
     const end = camera.position.clone()
-      .addScaledVector(forward, distance - randomBetween(5, 8))
-      .addScaledVector(right, randomBetween(1.5, 5))
-      .addScaledVector(up, randomBetween(1, 3));
+      .addScaledVector(forward, distance - randomBetween(8, 12))
+      .addScaledVector(right, side * randomBetween(6, 11))
+      .addScaledVector(up, endHeight);
 
     meteorIdRef.current += 1;
     return {
       id: meteorIdRef.current,
       start,
       end,
-      duration: randomBetween(0.9, 1.3),
+      duration: randomBetween(2.7, 3.15),
     };
   }, [camera]);
 

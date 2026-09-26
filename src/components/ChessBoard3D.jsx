@@ -524,7 +524,7 @@ export default function ChessBoard3D({ onGameStart, onRevealStart }) {
         camera={{ position: cameraPosition, fov: cameraFov }}
       >
         <Suspense fallback={null}>
-        <color attach="background" args={['#050505']} />
+        <color attach="background" args={['#080b14']} />
         
         <SpaceBackdrop prefersReducedMotion={prefersReducedMotion} />
 
