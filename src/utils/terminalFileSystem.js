@@ -5,9 +5,9 @@ export const fileSystem = {
       "projects": {
         type: "dir",
         children: {
-          "flowlens.txt": { type: "file", content: "🤖 Project: FlowLens.AI\nStack: Next.js, TypeScript, Playwright, Codex\nDescription: AI-powered QA testing platform that converts product knowledge into structured test cases.\nRole: Creator\nHighlights: Agentic workflow, AI output validation, Evidence-backed reporting" },
-          "portfolio.txt": { type: "file", content: "♟️ Project: Portfolio (This Site!)\nStack: React, Vite, Tailwind, Framer Motion\nDescription: A chess-themed interactive portfolio with a functional terminal.\nRole: Creator & Designer\nHighlights: Chess-themed UI, Interactive terminal, CRT effects" },
-          "churn_detection.py": { type: "file", content: "# 📊 InfoEdge Intern Project\n# Built automated customer usage drop detection system.\n# Reduced churn by proactively reaching out to at-risk clients.\n# Stack: Python, SQL\n# Impact: 20% lower churn risk" }
+          "flowlens.txt": { type: "file", content: "🤖 Project: FlowLens.AI\nStack: Next.js, TypeScript, Playwright, Codex SDK, MCP, LLM Agents\nDescription: Product-aware agentic UI testing platform that turns requirements into test plans, browser execution, and evidence-backed reports.\nRole: Team Lead\nHighlights: Vibathon Top-5 finalist, runtime reasoning, Playwright MCP" },
+          "portfolio.txt": { type: "file", content: "♟️ Project: Portfolio (This Site!)\nStack: React, Vite, Tailwind, Framer Motion, Three.js\nDescription: A chess-themed interactive portfolio with a functional terminal.\nRole: Creator & Designer\nHighlights: 3D chess interaction, cinematic portfolio reveal, interactive terminal" },
+          "churn_detection.py": { type: "file", content: "# 📊 InfoEdge Intern Project\n# Built a Python and SQL statistical usage-analysis pipeline.\n# Identified customer accounts showing potential churn signals.\n# Stack: Python, SQL\n# Impact: Automated actionable customer-risk reports for product owners" }
         }
       },
       "about.txt": { 
@@ -16,21 +16,21 @@ export const fileSystem = {
 👤 RAJAN DHIMAN
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-📍 Role: Associate Software Engineer @ Oracle
-🎓 Education: B.Tech in Computer Science
+📍 Role: Software Engineer @ Oracle
+🎓 Education: B.Tech in Computer Science and Engineering
 📅 Experience: 2+ years building enterprise systems
 
 ♟️ FIDE Rated Chess Player (1597)
 🏆 Competitive Programmer (CodeChef 2033)
 
 🛠️ Top Skills:
-   • Java & Spring Boot
-   • OAuth 2.0 & IAM
-   • AI-Assisted Dev (Codex, Next.js, Playwright)
-   • REST APIs & Backend Development
+   • Java, Spring Boot & Microservices
+   • OAuth 2.0, SAML 2.0, JWT & IAM
+   • Codex SDK, MCP, Playwright & Agentic Workflows
+   • AWS, Docker, Kubernetes & CI/CD
 
 🎯 Currently: Building scalable enterprise solutions
-📚 Learning: Advanced System Design & Cloud Architecture
+🏅 OCI 2025 Certified AI Foundations Associate
 
 💡 Fun Fact: I think 10 moves ahead in code, just like in chess!` 
       },
@@ -85,9 +85,9 @@ export const commands = {
   ---------------------------------------------------
   👤 RAJAN DHIMAN | Software Engineer
   ---------------------------------------------------
-  📍 Role: Associate Software Engineer @ Oracle
-  🛠️ Stack: Java, Spring Boot, OAuth 2.0, Next.js, AI/Codex
-  🏆 Rating: 2033 (CodeChef) | 1597 (FIDE)
+  📍 Role: Software Engineer @ Oracle
+  🛠️ Stack: Java, Spring Boot, Microservices, OAuth 2.0, SAML 2.0, JWT
+  🏆 1000+ DSA problems solved | 1597 FIDE rating
   
   Looking for a developer who thinks 10 moves ahead?
   Type 'email' to start the conversation.
@@ -124,8 +124,8 @@ Initiating hiring protocol...
 💼 CANDIDATE PROFILE LOADED
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Name: Rajan Dhiman
-Role: Associate Software Engineer @ Oracle
-Rating: 2033 (CodeChef) | 1597 FIDE (Chess)
+Role: Software Engineer @ Oracle
+Achievement: 1000+ DSA problems solved | 1597 FIDE rating
 Status: 🟢 Available for opportunities
 
 💡 Looking forward to discussing how I can contribute 

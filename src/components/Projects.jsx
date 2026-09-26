@@ -8,24 +8,22 @@ const PROJECTS = [
   {
     id: 1,
     name: "FlowLens.AI",
-    tagline: "Product-Aware AI Testing Agent for Enterprise UI Workflows",
+    tagline: "Product-Aware Agentic UI Testing Platform · Vibathon Top-5 Finalist",
     category: "AI / QA Platform",
-    description: "Built a product-aware UI testing agent that converts natural-language test goals into validated browser workflows, evidence-backed reports, and bug-ready findings — without brittle scripts.",
-    overview: "Pipeline: Product knowledge + user goal → workflow planner → workflow validator → guarded browser runner → evidence collector → report writer",
+    description: "Led a five-member team to build an AI-assisted QA platform that turns product knowledge and natural-language requirements into structured test plans, browser execution, and evidence-backed reports.",
+    overview: "Product knowledge + requirements → test plans → agentic browser execution → evidence-backed reports",
     features: [
-      "Designed a bounded agentic pipeline handling test case planning and runtime reasoning with TypeScript schemas and stop conditions",
-      "Integrated Codex-oriented AI provider abstraction with prompt guardrails for validated AI output",
-      "Built Playwright-backed browser execution layer with mock/fixture-friendly paths",
-      "Implemented SQLite-backed local storage for run artifacts, screenshots, and evidence reports",
-      "Architected as a monorepo (npm workspaces) with 15+ focused packages",
-      "Operator console built with Next.js + React for natural-language test input and report viewing"
+      "Led a five-member team through a one-week Vibathon to deliver a functional MVP",
+      "Redesigned from deterministic LLM-to-Playwright orchestration to Codex SDK with Playwright MCP",
+      "Built an agentic workflow where AI reasons at runtime and invokes browser tools directly",
+      "Finished as a Top-5 finalist and continued development with internal QA teams"
     ],
-    techStack: ["Next.js", "TypeScript", "Node.js", "Playwright", "Codex", "SQLite", "Vitest", "REST APIs"],
+    techStack: ["Next.js", "TypeScript", "Playwright", "Codex SDK", "MCP", "LLM Agents", "LLM Guardrails"],
     links: {
       github: "https://github.com/Rajancoding597/flowlens-ai",
       demo: null
     },
-    date: "Apr 2026 – Jun 2026",
+    date: "Vibathon · Top-5 Finalist",
     color: "gold"
   }
 ];

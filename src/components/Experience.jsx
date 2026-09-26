@@ -7,47 +7,47 @@ import DecryptedText from './ReactBits/DecryptedText';
 const EXPERIENCES = [
   {
     id: 1,
-    role: "Associate Software Engineer | Oracle Restaurants (FBGIU) Department",
+    role: "Software Engineer",
     company: "Oracle",
-    period: "Aug 2024 – Present",
+    period: "Jul 2024 – Present",
     type: "Full-time",
     location: "Hyderabad, Telangana, India",
     achievements: [
       {
         icon: Users,
-        text: "Contributed to enterprise identity migration from in-house IDM to Oracle IAM (OAuth 2.0)",
-        impact: "Implemented SAML 2.0 SSO for a client with 2M+ users"
+        text: "Implemented OIDC authentication with OAuth 2.0 Authorization Code Flow and SAML 2.0 federation during a migration to Oracle IAM",
+        impact: "Enabled federated SSO for an enterprise customer with 2M+ users"
       },
       {
         icon: Zap,
-        text: "Developed core token validation logic and enabled secure login",
-        impact: "Supported multiple products previously on legacy IDM"
+        text: "Built backward-compatible JWT validation across legacy and Oracle IAM flows",
+        impact: "Covered public-key retrieval, signature, claims, and identity-source validation"
       },
       {
         icon: TrendingUp,
-        text: "Built custom session management features",
-        impact: "Refresh token flows and idle/manual/permission-denied logout handling"
+        text: "Developed authorization-code exchange, access/ID/refresh-token, and logout flows",
+        impact: "Delivered end-to-end authentication and session management"
       },
       {
         icon: Zap,
-        text: "Applied Codex-driven AI workflows for code generation, refactoring, debugging, and test scaffolding",
-        impact: "Maintained quality with manual review guardrails"
+        text: "Extended authentication and session management across the primary web application and a C# Excel add-in",
+        impact: "Supported consistent secure access across product surfaces"
       },
       {
         icon: TrendingUp,
-        text: "Built AI-assisted internal GUI tools to automate build generation and deployment prep",
-        impact: "Reduced manual developer effort"
+        text: "Built an internal developer environment portal with Node.js, React, SQLite, and PowerShell",
+        impact: "Centralized environment data, patching workflows, service tools, and developer commands"
       }
     ],
-    skills: ["Java", "Spring Boot", "OAuth 2.0", "IAM", "Python", "AI-Assisted Dev"]
+    skills: ["Java", "Microservices", "OAuth 2.0", "SAML 2.0", "JWT", "IAM"]
   },
   {
     id: 2,
-    role: "Associate Software Engineer Internship",
+    role: "Software Engineer Intern",
     company: "Oracle",
-    period: "Jan 2024 – Jul 2024",
+    period: "Jan 2024 – Jun 2024",
     type: "Internship",
-    location: "Remote",
+    location: "Hyderabad, Telangana, India",
     achievements: [
       {
         icon: TrendingUp,
@@ -59,23 +59,23 @@ const EXPERIENCES = [
   },
   {
     id: 3,
-    role: "Business Intelligence Analyst | BI Team of Naukri.com",
-    company: "Info Edge India Ltd",
+    role: "Business Analyst Intern",
+    company: "InfoEdge (Naukri.com)",
     period: "May 2023 – Jul 2023",
     type: "Internship",
     location: "Noida, Uttar Pradesh, India",
     achievements: [
       {
         icon: TrendingUp,
-        text: "Built Python + SQL usage drop detection system",
-        impact: "Enabled 20% lower churn risk through proactive retention targeting"
+        text: "Developed a Python and SQL statistical usage-analysis pipeline for historical product-usage patterns",
+        impact: "Automated actionable customer-risk reports for product owners"
       }
     ],
     skills: ["SQL", "Python", "Data Analysis"]
   },
   {
     id: 4,
-    role: "B.Tech in Computer Science",
+    role: "Bachelor of Technology in Computer Science and Engineering",
     company: "NIT Jalandhar",
     period: "September 2020 – June 2024",
     type: "Education",
@@ -92,6 +92,8 @@ const EXPERIENCES = [
 ];
 
 const Experience = () => {
+  const chronologicalExperiences = [...EXPERIENCES].reverse();
+
   return (
     <section className="py-20 px-4 md:px-8 max-w-6xl mx-auto">
       <motion.div
@@ -117,7 +119,7 @@ const Experience = () => {
       </motion.div>
 
       <div className="space-y-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-gold-500/30 before:to-transparent">
-        {EXPERIENCES.map((exp, index) => (
+        {chronologicalExperiences.map((exp, index) => (
           <motion.div
             key={exp.id}
             initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}

@@ -18,7 +18,7 @@ export const FAMOUS_GAMES = {
     players: "Anderssen vs Kieseritzky, 1851",
     moves: [
       'e4', 'e5', 'f4', 'exf4', 'Bc4', 'Qh4+', 'Kf1', 'b5',
-      'Bxb5', 'd6', 'Nf3', 'Qh6', 'd4', 'Nf6', 'Bxf4', 'Qg7'
+      'Bxb5', 'Nf6', 'Nf3', 'Qh6', 'd3', 'Nh5', 'Nh4', 'Qg5'
     ]
   },
   opera: {
