@@ -517,8 +517,12 @@ export default function ChessBoard3D({ onGameStart, onRevealStart }) {
 
       <div className="absolute top-8 md:top-10 inset-x-4 text-center pointer-events-none">
         <p className="text-[10px] md:text-xs font-mono uppercase tracking-[0.3em] text-gold-500/80 mb-3">The opening move</p>
-        <h2 className="text-2xl md:text-4xl font-medium tracking-tight text-neutral-100">Grandmaster’s Gambit</h2>
-        <p className="mt-3 text-xs md:text-sm text-neutral-400">Welcome to Rajan Dhiman Portfolio</p>
+        <h2
+          aria-label="Welcome to Rajan Dhiman Portfolio."
+          className="mx-auto max-w-4xl bg-gradient-to-b from-white via-neutral-100 to-[#d4af37] bg-clip-text font-serif text-[clamp(2.15rem,5vw,4.5rem)] font-semibold leading-[0.95] tracking-[-0.055em] text-transparent drop-shadow-[0_5px_24px_rgba(212,175,55,0.16)]"
+        >
+          Welcome to <span className="italic">Rajan Dhiman</span> Portfolio.
+        </h2>
       </div>
 
       {isSkipReveal && (
