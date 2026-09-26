@@ -1,6 +1,6 @@
 import React, { Suspense, useRef, useState, useEffect, useMemo, useCallback } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls, Environment, Lightformer, ContactShadows, Stars, Sparkles, useGLTF, useProgress } from '@react-three/drei';
+import { OrbitControls, Environment, Lightformer, ContactShadows, useGLTF, useProgress } from '@react-three/drei';
 import { motion } from 'framer-motion';
 import { Chess } from 'chess.js';
 import * as THREE from 'three';
@@ -9,6 +9,7 @@ import { MODEL_URLS, PIECE_MODELS, snapshotBoard } from '../utils/chessModels';
 import ChessPieceModel from './ChessPieceModel';
 import ChessBoardFrame from './ChessBoardFrame';
 import Moon from './Moon';
+import SpaceBackdrop, { SpaceFinish } from './SpaceBackdrop';
 
 export const REVEAL = {
   duration: 3600,
@@ -517,16 +518,14 @@ export default function ChessBoard3D({ onGameStart, onRevealStart }) {
       <Canvas
         shadows
         dpr={1.75}
-        gl={{ antialias: true }}
+        gl={{ antialias: false, toneMapping: THREE.NoToneMapping }}
         fallback={<div role="status" className="p-8 text-center text-neutral-300">The chess scene is unavailable. Skip to explore the portfolio.</div>}
         camera={{ position: cameraPosition, fov: cameraFov }}
       >
         <Suspense fallback={null}>
         <color attach="background" args={['#050505']} />
         
-        {/* Galaxy Background */}
-        <Stars radius={100} depth={50} count={3500} factor={4} saturation={0} fade speed={1} />
-        <Sparkles count={120} scale={12} size={2} speed={0.4} opacity={0.5} color="#d4af37" />
+        <SpaceBackdrop prefersReducedMotion={prefersReducedMotion} />
 
         <Moon />
 
@@ -600,6 +599,7 @@ export default function ChessBoard3D({ onGameStart, onRevealStart }) {
           autoRotate={mode === 'autoplay' && !isRevealing && !prefersReducedMotion}
           autoRotateSpeed={0.5}
         />
+        <SpaceFinish />
         </Suspense>
       </Canvas>
       </SceneErrorBoundary>
